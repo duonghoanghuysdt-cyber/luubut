@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác minh danh tính - LƯU BÚT NHÓM</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1e1e1e;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .login-card {
+            background: #252526;
+            padding: 45px 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            width: 90%;
+            max-width: 440px;
+            text-align: center;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .detective-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .login-card h2 {
+            color: #ff66b2;
+            margin-bottom: 10px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .login-card p {
+            color: #a0a0a0;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #d4d4d4;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #181818;
+            border: 1.5px solid #383838;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #666666;
+        }
+
+        .form-group input:focus {
+            border-color: #ff66b2;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #ff66b2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .error-msg {
+            color: #ff4757;
+            font-size: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* POPUP HỎI ĐẸP TRAI */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #252526;
+            padding: 35px 30px;
+            border-radius: 20px;
+            border: 1px solid #ff66b2;
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(255, 102, 178, 0.3);
+            position: relative;
+        }
+
+        .modal-card h3 {
+            color: #ff66b2;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .modal-card p {
+            color: #d4d4d4;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            position: relative;
+            min-height: 50px;
+        }
+
+        .btn-yes {
+            padding: 12px 24px;
+            background: #ff66b2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-no {
+            padding: 12px 24px;
+            background: #444;
+            color: #aaa;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            position: relative;
+            flex: 1;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <span class="detective-icon">🕵️‍♂️</span>
+        <h2>LƯU BÚT NHÓM</h2>
+        <p>Xác minh danh tính 1 trong 5 thành viên</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Tên của bạn:</label>
+                <input type="text" id="username" placeholder="Ví dụ: Huy, Lan, Anh, Thư, Linh" autocomplete="off" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu:</label>
+                <input type="password" id="password" placeholder="Nhập mật khẩu của bạn..." required>
+            </div>
+
+            <button type="submit" class="btn-login">TIẾP TỤC</button>
+            <div id="errorMsg" class="error-msg">Tên hoặc mật khẩu không chính xác!</div>
+        </form>
+    </div>
+
+    <!-- KHUNG XÁC MINH CÂU HỎI ĐẸP TRAI -->
+    <div class="modal-overlay" id="handsomeModal">
+        <div class="modal-card">
+            <span style="font-size: 40px; display: block; margin-bottom: 10px;">😎</span>
+            <h3>CÂU HỎI BẢO MẬT</h3>
+            <p>Cho hỏi thật lòng: <b>Huy có đẹp trai không?</b></p>
+            <div class="modal-btns">
+                <button class="btn-yes" onclick="finishLogin()">Có, quá đẹp trai! ❤️</button>
+                <button class="btn-no" id="btnNo" onmouseover="dodgeButton()" onclick="wrongAnswer()">Không ❌</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ACCOUNTS = {
+            "huy": "huy123",
+            "lan": "lan123",
+            "thư": "thu123",
+            "thu": "thu123",
+            "linh": "linh123",
+            "anh": "anh123"
+        };
+
+        const NAME_MAP = {
+            "huy": "Huy",
+            "lan": "Lan",
+            "thư": "Thư",
+            "thu": "Thư",
+            "linh": "Linh",
+            "anh": "Anh"
+        };
+
+        let pendingUser = "";
+
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const rawUser = document.getElementById("username").value.trim();
+            const inputUser = rawUser.toLowerCase();
+            const inputPass = document.getElementById("password").value;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if (ACCOUNTS[inputUser] && ACCOUNTS[inputUser] === inputPass) {
+                pendingUser = NAME_MAP[inputUser];
+                
+                // Mở khung hỏi đẹp trai
+                document.getElementById("handsomeModal").classList.add("active");
+            } else {
+                errorMsg.innerText = "Tên thành viên hoặc mật khẩu không đúng!";
+                errorMsg.style.display = "block";
+            }
+        });
+
+        // Nút "Không" tự né khi rê chuột tới
+        function dodgeButton() {
+            const btnNo = document.getElementById("btnNo");
+            const x = Math.random() * 160 - 80;
+            const y = Math.random() * 100 - 50;
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Chọn "Có" -> Hoàn tất đăng nhập
+        function finishLogin() {
+            localStorage.setItem("currentUser", pendingUser);
+            window.location.href = "home.html";
+        }
+    </script>
+</body>
+</html>
