@@ -10,20 +10,27 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
+        :root {
+            --primary: #FFB2D1;
+            --hover: #FC8F66;
+            --accent: #FFB2D1;
+            --bg-gradient: linear-gradient(135deg, #FFB2D1 0%, #FC8F66 100%);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body.dark-mode {
-            background-color: #121212;
+            background: #121212;
             color: #ffffff;
         }
         body.light-mode {
-            background-color: #f4f6f9;
+            background: #f4f6f9;
             color: #1a1a1a;
         }
 
@@ -44,7 +51,7 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #FFB2D1;
+            color: var(--primary);
             letter-spacing: 2px;
         }
 
@@ -76,8 +83,8 @@
 
         .btn-logout {
             background-color: transparent;
-            border: 1px solid #FFB2D1;
-            color: #FFB2D1;
+            border: 1px solid var(--primary);
+            color: var(--primary);
         }
 
         .container {
@@ -110,7 +117,7 @@
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, #FFB2D1, #FC8F66);
+            background: var(--bg-gradient);
             color: #ffffff;
         }
 
@@ -146,8 +153,13 @@
             border: 1px solid #ccc;
         }
 
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .btn-post {
-            background: linear-gradient(135deg, #FFB2D1, #FC8F66);
+            background: var(--bg-gradient);
             color: white;
             padding: 10px 25px;
             border: none;
@@ -189,7 +201,6 @@
 
         .post-author {
             font-weight: bold;
-            color: #FFB2D1;
         }
 
         .post-time {
@@ -215,7 +226,7 @@
         .btn-like {
             background: none;
             border: none;
-            color: #FC8F66;
+            color: var(--hover);
             cursor: pointer;
             font-weight: bold;
         }
@@ -266,7 +277,7 @@
         </div>
 
         <div class="post-card">
-            <h3 style="color: #FFB2D1;">✍️ Viết dòng lưu bút chung cho nhóm:</h3>
+            <h3 style="color: var(--primary);" id="postTitle">✍️ Viết dòng lưu bút chung cho nhóm:</h3>
             <textarea id="postContent" placeholder="Viết dòng tâm sự của bạn..."></textarea>
             <div style="float: left; font-size: 14px; opacity: 0.8; margin-top: 8px;">
                 🌐 Chế độ: <span style="color: #4cd137;">Công khai cả nhóm</span>
@@ -283,6 +294,35 @@
     </div>
 
     <script>
+        // BẢNG MÀU RIÊNG CHO TỪNG THÀNH VIÊN
+        const USER_THEMES = {
+            "Lan": { 
+                primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1", 
+                bgGradient: "linear-gradient(135deg, #FFB2D1 0%, #FC8F66 100%)",
+                darkBgGradient: "linear-gradient(135deg, #3c1b28 0%, #331912 100%)"
+            },
+            "Thư": { 
+                primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8", 
+                bgGradient: "linear-gradient(135deg, #63e3d8 0%, #a8edd9 100%)",
+                darkBgGradient: "linear-gradient(135deg, #0d2b29 0%, #153b38 100%)"
+            },
+            "Anh": { 
+                primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed", 
+                bgGradient: "linear-gradient(135deg, #16213e 0%, #0f172a 100%)",
+                darkBgGradient: "linear-gradient(135deg, #0b1120 0%, #080c18 100%)"
+            },
+            "Linh": { 
+                primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675", 
+                bgGradient: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
+                darkBgGradient: "linear-gradient(135deg, #1e1b2e 0%, #121824 100%)"
+            },
+            "Huy": { 
+                primary: "#fd79a8", hover: "#e84393", accent: "#00cec9", 
+                bgGradient: "linear-gradient(135deg, #a8edd9 0%, #fed6e3 100%)",
+                darkBgGradient: "linear-gradient(135deg, #192a27 0%, #2d1a24 100%)"
+            }
+        };
+
         // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBiuVAF_eWwjY_OTVI0lLgCpMj-9Guc78",
@@ -294,13 +334,31 @@
             appId: "1:1045123557742:web:8e3d063aba09e8d757b97f"
         };
 
-        // Khởi tạo Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // LẤY ĐÚNG TÊN DỰA VÀO CHÌA KHÓA "currentUser" TỪ INDEX.HTML
+        // Lấy tên từ localStorage
         const username = localStorage.getItem('currentUser') || 'Thành viên CONAN';
         document.getElementById('currentUser').innerText = username;
+
+        // ÁP DỤNG THEME MÀU SẮC RIÊNG CỦA THÀNH VIÊN
+        function applyUserTheme() {
+            const theme = USER_THEMES[username] || USER_THEMES["Lan"];
+            const root = document.documentElement;
+            
+            root.style.setProperty('--primary', theme.primary);
+            root.style.setProperty('--hover', theme.hover);
+            root.style.setProperty('--accent', theme.accent);
+            root.style.setProperty('--bg-gradient', theme.bgGradient);
+
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.style.background = theme.darkBgGradient;
+            } else {
+                document.body.style.background = '#f4f6f9';
+            }
+        }
+
+        applyUserTheme();
 
         function toggleTheme() {
             const body = document.body;
@@ -314,6 +372,7 @@
                 body.classList.add('dark-mode');
                 themeBtn.innerText = '☀️ Nền sáng';
             }
+            applyUserTheme();
         }
 
         function submitPost() {
@@ -357,11 +416,12 @@
             })).reverse();
 
             postsArray.forEach(post => {
+                const authorTheme = USER_THEMES[post.author] || { primary: '#FFB2D1' };
                 const postEl = document.createElement('div');
                 postEl.className = 'post-item';
                 postEl.innerHTML = `
                     <div class="post-header">
-                        <span class="post-author">${post.author}</span>
+                        <span class="post-author" style="color: ${authorTheme.primary};">${post.author}</span>
                         <span class="post-time">🌐 Công khai | 🕒 ${post.time}</span>
                     </div>
                     <div class="post-content">${escapeHtml(post.content)}</div>
