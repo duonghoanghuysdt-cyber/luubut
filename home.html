@@ -603,6 +603,7 @@
         const ALL_MEMBERS = ["Huy", "Lan", "Anh", "Thư", "Linh"];
 
         let posts = [];
+        let lastPostsHash = "";
         let currentTab = "luubut";
         let base64Image = "";
 
@@ -644,7 +645,11 @@
             "Lan": { primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1" },
             "Thư": { primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8" },
             "Anh": { primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed" },
-            "Linh": { primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675" },
+            "Linh": {
+                primary: "#00857c",
+                hover: "#00695f",
+                accent: "#4dd0c8"
+            },
             "Huy": { primary: "#fd79a8", hover: "#e84393", accent: "#00cec9" }
         };
 
@@ -667,28 +672,33 @@
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    posts = data.record.posts || [];
-                    renderPosts();
+                    const newPosts = data.record.posts || [];
+                    const newHash = JSON.stringify(newPosts);
+                    if(newHash!==lastPostsHash){
+                        lastPostsHash=newHash;
+                        posts=newPosts;
+                        renderPosts();
+                    }
                 }
-            } catch (error) {
-                console.error("Lỗi lấy dữ liệu:", error);
-            }
+            } catch(error){console.error("Lỗi lấy dữ liệu:",error);}
         }
 
         async function savePostsToServer(newPostsArray) {
             try {
-                const response = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_SECRET_KEY
+                const response = await fetch(API_URL,{
+                    method:"PUT",
+                    headers:{
+                        "Content-Type":"application/json",
+                        "X-Master-Key":JSONBIN_SECRET_KEY
                     },
-                    body: JSON.stringify({ posts: newPostsArray })
+                    body:JSON.stringify({posts:newPostsArray})
                 });
-                if (response.ok) {
-                    fetchPostsFromServer();
+                if(response.ok){
+                    posts=newPostsArray;
+                    lastPostsHash=JSON.stringify(newPostsArray);
+                    renderPosts();
                 }
-            } catch (error) {
+            }catch(error){
                 alert("Không thể lưu bài viết lên server. Kiểm tra lại kết nối mạng!");
             }
         }
