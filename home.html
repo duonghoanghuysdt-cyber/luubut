@@ -251,7 +251,7 @@
         <div class="logo">CONAN</div>
         <div class="header-actions">
             <button class="btn btn-theme" onclick="toggleTheme()" id="themeBtn">☀️ Nền sáng</button>
-            <span style="font-weight: bold;">👤 <span id="currentUser">Huy</span></span>
+            <span style="font-weight: bold;">👤 <span id="currentUser">Đang tải...</span></span>
             <button class="btn btn-logout" onclick="logout()">Đăng xuất</button>
         </div>
     </header>
@@ -283,7 +283,7 @@
     </div>
 
     <script>
-        // Cấu hình Firebase có đường dẫn Database chuẩn xác
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBiuVAF_eWwjY_OTVI0lLgCpMj-9Guc78",
             authDomain: "luubut-df651.firebaseapp.com",
@@ -298,7 +298,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        const username = localStorage.getItem('username') || 'Huy';
+        // LẤY ĐÚNG TÊN DỰA VÀO CHÌA KHÓA "currentUser" TỪ INDEX.HTML
+        const username = localStorage.getItem('currentUser') || 'Thành viên CONAN';
         document.getElementById('currentUser').innerText = username;
 
         function toggleTheme() {
@@ -339,7 +340,7 @@
             });
         }
 
-        // Lắng nghe dữ liệu
+        // Lắng nghe dữ liệu theo thời gian thực từ Firebase
         db.ref('posts').on('value', (snapshot) => {
             const postsContainer = document.getElementById('postsContainer');
             postsContainer.innerHTML = '';
@@ -371,9 +372,6 @@
                 `;
                 postsContainer.appendChild(postEl);
             });
-        }, (error) => {
-            console.error('Lỗi lấy dữ liệu:', error);
-            alert('Không thể kết nối Firebase: ' + error.message);
         });
 
         function likePost(id, currentLikes) {
@@ -395,6 +393,7 @@
         }
 
         function logout() {
+            localStorage.removeItem('currentUser');
             window.location.href = 'index.html';
         }
     </script>
