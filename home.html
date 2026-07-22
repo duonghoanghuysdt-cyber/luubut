@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ - Lưu Bút & Kỷ Niệm Nhóm 5</title>
     <style>
-        /* --- KHAI BÁO BIẾN MÀU MẶC ĐỊNH (LIGHT MODE) --- */
         :root {
             --primary-color: #ff69b4;
             --primary-hover: #ff3399;
@@ -21,7 +20,6 @@
             --btn-toggle-bg: #f1f2f6;
         }
 
-        /* --- CHẾ ĐỘ NỀN ĐEN (DARK MODE) --- */
         body.dark-theme {
             --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
             --header-bg: rgba(30, 30, 30, 0.85);
@@ -45,7 +43,6 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* --- NAVBAR / HEADER --- */
         header {
             background: var(--header-bg);
             backdrop-filter: blur(10px);
@@ -67,21 +64,16 @@
             margin: 0;
             color: var(--primary-color);
             font-size: 24px;
-            transition: color 0.3s;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--text-color);
             font-weight: 600;
-            flex-wrap: wrap;
         }
 
-        /* NÚT ĐỔI MÀU NỀN TỐI / SÁNG */
         .btn-theme-toggle {
             background-color: var(--btn-toggle-bg);
             color: var(--text-color);
@@ -91,14 +83,6 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s;
-        }
-
-        .btn-theme-toggle:hover {
-            transform: scale(1.05);
         }
 
         .btn-logout {
@@ -108,24 +92,15 @@
             padding: 7px 18px;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: bold;
         }
 
-        .btn-logout:hover {
-            background-color: var(--primary-color);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        /* --- CONTAINER CHÍNH --- */
         .container {
             max-width: 1050px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* --- TAB CHUYỂN ĐỔI --- */
         .tab-container {
             display: flex;
             gap: 12px;
@@ -146,17 +121,14 @@
             cursor: pointer;
             transition: all 0.3s;
             white-space: nowrap;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
 
         .tab-btn.active {
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
 
-        /* --- FORM VIẾT BÀI --- */
         .post-form {
             background: var(--card-bg);
             padding: 25px;
@@ -164,7 +136,6 @@
             margin-bottom: 30px;
             border: 1px solid var(--card-border);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: background 0.4s ease;
         }
 
         .form-header-title {
@@ -172,28 +143,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 8px;
         }
 
         .post-form h3 {
             margin: 0;
             color: var(--primary-color);
             font-size: 17px;
-            transition: color 0.3s;
-        }
-
-        .btn-see-more {
-            color: var(--text-sub);
-            font-size: 13px;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .btn-see-more:hover {
-            color: var(--primary-color);
         }
 
         .post-form textarea {
@@ -210,15 +165,8 @@
             font-size: 15px;
             margin-bottom: 14px;
             font-family: inherit;
-            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        .post-form textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
-        }
-
-        /* CHỌN ẢNH TỪ BỘ SƯU TẬP */
         .file-upload-wrapper {
             margin-bottom: 15px;
             display: none;
@@ -234,7 +182,6 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            transition: all 0.3s;
         }
 
         .image-preview-box {
@@ -249,7 +196,6 @@
             max-height: 150px;
             object-fit: cover;
             border-radius: 8px;
-            border: 1px solid var(--input-border);
         }
 
         .btn-remove-img {
@@ -263,17 +209,12 @@
             width: 24px;
             height: 24px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-            line-height: 24px;
-            text-align: center;
         }
 
         .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 12px;
         }
 
@@ -283,9 +224,6 @@
             border: 1px solid var(--input-border);
             padding: 8px 12px;
             border-radius: 8px;
-            outline: none;
-            cursor: pointer;
-            font-weight: 500;
         }
 
         .btn-send {
@@ -296,17 +234,8 @@
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            font-size: 14px;
         }
 
-        .btn-send:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* --- BÀI VIẾT --- */
         .cards-list {
             display: flex;
             flex-direction: column;
@@ -319,23 +248,9 @@
             border-radius: 12px;
             padding: 20px 24px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.4s ease;
-            width: 100%;
-            box-sizing: border-box;
             border: 1px solid var(--card-border);
             border-left-width: 5px;
-            transition: background 0.4s ease;
         }
-
-        body.dark-theme .card.private-card { border-left-color: #f1c40f; background: #332b00; }
-        body.dark-theme .card.anonymous-card { border-left-color: #a29bfe; background: #222034; }
-        body.dark-theme .card.gift-card { border-left-color: #00cec9; background: #122b2c; }
-        body.dark-theme .card.memory-card { border-left-color: #ff7675; background: #2c1a1a; }
-
-        body:not(.dark-theme) .card.private-card { border-left-color: #f1c40f; background: #fffdf0; }
-        body:not(.dark-theme) .card.anonymous-card { border-left-color: #a29bfe; background: #f8f7ff; }
-        body:not(.dark-theme) .card.gift-card { border-left-color: #00cec9; background: #f0ffff; }
-        body:not(.dark-theme) .card.memory-card { border-left-color: #ff7675; background: #fff8f8; }
 
         .card-header {
             display: flex;
@@ -382,36 +297,23 @@
             margin-bottom: 15px;
             display: block;
             object-fit: cover;
-            border: 1px solid var(--input-border);
         }
 
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 5px;
         }
 
-        .like-btn {
+        .like-btn, .delete-btn {
             background: none;
             border: none;
-            color: #e84393;
             cursor: pointer;
-            font-size: 14px;
-            padding: 0;
             font-weight: bold;
         }
 
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #ff7675;
-            cursor: pointer;
-            font-size: 13px;
-            padding: 0;
-        }
-
-        .delete-btn:hover { text-decoration: underline; }
+        .like-btn { color: #e84393; }
+        .delete-btn { color: #ff7675; font-size: 13px; }
 
         .empty-msg {
             color: var(--text-sub);
@@ -420,134 +322,15 @@
             padding: 40px;
             background: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-        }
-
-        /* --- POPUP MODAL HƯỚNG DẪN --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            border: 1px solid var(--card-border);
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .modal-header h4 {
-            margin: 0;
-            color: var(--primary-color);
-            font-size: 18px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .modal-body {
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-color);
-        }
-
-        .modal-body ul { padding-left: 20px; margin: 10px 0; }
-        .modal-body li { margin-bottom: 8px; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                padding: 12px 16px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            header h1 {
-                font-size: 20px;
-            }
-
-            .user-info {
-                width: 100%;
-                justify-content: space-between;
-                gap: 8px;
-            }
-
-            .btn-theme-toggle {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
-            .btn-logout {
-                padding: 5px 12px;
-                font-size: 13px;
-            }
-
-            .container {
-                margin: 15px auto;
-                padding: 0 12px;
-            }
-
-            .post-form {
-                padding: 16px;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR HEADER -->
     <header>
         <h1>CONAN</h1>
         <div class="user-info">
-            <button class="btn-theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">
+            <button class="btn-theme-toggle" onclick="toggleTheme()">
                 <span id="theme-icon">🌙</span> <span id="theme-text">Nền tối</span>
             </button>
             <span id="current-user-display">Thành viên</span>
@@ -556,7 +339,6 @@
     </header>
 
     <div class="container">
-        
         <!-- TAB CHUYỂN ĐỔI -->
         <div class="tab-container">
             <button class="tab-btn active" id="tab-luubut" onclick="switchTab('luubut')">📌 Lưu Bút Nhóm</button>
@@ -565,16 +347,14 @@
             <button class="tab-btn" id="tab-gop-y" onclick="switchTab('gop-y')">🕵️ Góp Ý Ẩn Danh</button>
         </div>
 
-        <!-- FORM VIẾT BÀI -->
+        <!-- FORM VIẾT BÀI LUÔN HIỆN -->
         <div class="post-form">
             <div class="form-header-title">
-                <h3 id="form-title">✍️ Để lại một dòng kỷ niệm:</h3>
-                <span class="btn-see-more" onclick="openGuideModal()">Xem thêm (Hướng dẫn) 💡</span>
+                <h3 id="form-title">✍️ Đăng bài mới:</h3>
             </div>
             
-            <textarea id="post-content" placeholder="Viết dòng tâm sự của bạn..."></textarea>
+            <textarea id="post-content" placeholder="Viết nội dung tại đây..."></textarea>
 
-            <!-- CHỌN ẢNH TỪ BỘ SƯU TẬP -->
             <div class="file-upload-wrapper" id="upload-wrapper">
                 <label for="img-file-input" class="btn-select-image">📸 Chọn ảnh từ bộ sưu tập...</label>
                 <input type="file" id="img-file-input" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
@@ -591,175 +371,43 @@
             </div>
         </div>
 
-        <!-- DANH SÁCH BÀI VIẾT -->
-        <h3 id="section-title" style="color: var(--text-color); margin-bottom: 15px; font-weight: 700;">📌 Tất cả kỷ niệm:</h3>
+        <!-- DANH SÁCH BÀI VIẾT BÊN DƯỚI -->
+        <h3 id="section-title" style="color: var(--text-color); margin-bottom: 15px;">📌 Danh sách bài đăng:</h3>
         <div class="cards-list" id="cards-container"></div>
-    </div>
-
-    <!-- KHUNG POPUP HƯỚNG DẪN -->
-    <div class="modal-overlay" id="guide-modal" onclick="closeGuideModalOnOutside(event)">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 id="modal-guide-title">💡 Hướng Dẫn Sử Dụng</h4>
-                <button class="modal-close" onclick="closeGuideModal()">✕</button>
-            </div>
-            <div class="modal-body" id="modal-guide-body"></div>
-        </div>
     </div>
 
     <script>
         const ALL_MEMBERS = ["Huy", "Lan", "Anh", "Thư", "Linh"];
 
-        /* --- XỬ LÝ CHUYỂN ĐỔI NỀN ĐEN / TRẮNG --- */
         function initTheme() {
             const savedTheme = localStorage.getItem("preferredTheme");
             if (savedTheme === "dark") {
                 document.body.classList.add("dark-theme");
                 document.getElementById("theme-icon").innerText = "☀️";
                 document.getElementById("theme-text").innerText = "Nền sáng";
-            } else {
-                document.body.classList.remove("dark-theme");
-                document.getElementById("theme-icon").innerText = "🌙";
-                document.getElementById("theme-text").innerText = "Nền tối";
             }
         }
 
         function toggleTheme() {
             document.body.classList.toggle("dark-theme");
             const isDark = document.body.classList.contains("dark-theme");
-            
-            if (isDark) {
-                document.getElementById("theme-icon").innerText = "☀️";
-                document.getElementById("theme-text").innerText = "Nền sáng";
-                localStorage.setItem("preferredTheme", "dark");
-            } else {
-                document.getElementById("theme-icon").innerText = "🌙";
-                document.getElementById("theme-text").innerText = "Nền tối";
-                localStorage.setItem("preferredTheme", "light");
-            }
-
-            if (currentUser) applyUserTheme(currentUser);
+            document.getElementById("theme-icon").innerText = isDark ? "☀️" : "🌙";
+            document.getElementById("theme-text").innerText = isDark ? "Nền sáng" : "Nền tối";
+            localStorage.setItem("preferredTheme", isDark ? "dark" : "light");
         }
 
         initTheme();
 
-        // FIX TÊN HUY:
-        if (localStorage.getItem("currentUser") && localStorage.getItem("currentUser").includes("Huy")) {
-            localStorage.setItem("currentUser", "Huy");
-        }
-
-        /* --- BẢNG MÀU THEME ĐẦY ĐỦ CHO 5 THÀNH VIÊN --- */
-        const USER_THEMES = {
-            "Lan": { 
-                primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1"
-            },
-            "Thư": { 
-                primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8"
-            },
-            "Anh": { 
-                primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed"
-            },
-            "Linh": { 
-                primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675"
-            },
-            "Huy": { 
-                primary: "#fd79a8", hover: "#e84393", accent: "#00cec9"
-            }
-        };
-
-        const currentUser = localStorage.getItem("currentUser");
-        if (!currentUser) {
-            window.location.href = "index.html";
-        } else {
-            document.getElementById('current-user-display').innerText = "👤 " + currentUser;
-            applyUserTheme(currentUser);
-        }
-
-        function applyUserTheme(user) {
-            const foundKey = Object.keys(USER_THEMES).find(key => key.toLowerCase().includes(user.toLowerCase()) || user.toLowerCase().includes(key.toLowerCase()));
-            const theme = USER_THEMES[foundKey || user];
-            
-            if (theme) {
-                document.documentElement.style.setProperty('--primary-color', theme.primary);
-                document.documentElement.style.setProperty('--primary-hover', theme.hover);
-                document.documentElement.style.setProperty('--accent-color', theme.accent);
-            }
-        }
+        const currentUser = localStorage.getItem("currentUser") || "Huy";
+        document.getElementById('current-user-display').innerText = "👤 " + currentUser;
 
         let posts = JSON.parse(localStorage.getItem("groupPosts")) || [];
         let currentTab = "luubut";
         let base64Image = "";
 
-        const tabGuides = {
-            'luubut': {
-                title: "📌 Hướng Dẫn: Lưu Bút Nhóm",
-                content: `
-                    <p>Mục <b>Lưu Bút Nhóm</b> là bảng tin chung công khai cho toàn thể nhóm 5:</p>
-                    <ul>
-                        <li><b>Ai xem được?</b> Tất cả thành viên trong nhóm đều nhìn thấy bài đăng của bạn.</li>
-                        <li><b>Cách dùng:</b> Nhập lời chúc, cảm nghĩ hoặc kỷ niệm vào ô trống rồi bấm <b>ĐĂNG BÀI</b>.</li>
-                        <li><b>Tương tác:</b> Bạn có thể thả tim ❤️ bài viết của các bạn khác.</li>
-                    </ul>
-                `
-            },
-            'ky-niem': {
-                title: "📸 Hướng Dẫn: Góc Kỷ Niệm (Album Ảnh)",
-                content: `
-                    <p>Nơi lưu giữ những khoảnh khắc đẹp nhất của nhóm qua hình ảnh:</p>
-                    <ul>
-                        <li><b>Cách chọn ảnh:</b> Bấm vào nút <b>"📸 Chọn ảnh từ bộ sưu tập..."</b> để mở thư viện ảnh trên điện thoại/máy tính của bạn.</li>
-                        <li><b>Chú thích:</b> Bạn có thể viết thêm lời nhắn/kỷ niệm đi kèm bức ảnh.</li>
-                        <li><b>Lưu ý:</b> Chọn ảnh có dung lượng dưới 3MB để hệ thống lưu trữ tốt nhất.</li>
-                    </ul>
-                `
-            },
-            'nhatky': {
-                title: "📖 Hướng Dẫn: Nhật Ký Cá Nhân & Lời Nhắn",
-                content: `
-                    <p>Mục này cho phép bạn lưu giữ tâm tư riêng hoặc gửi quà tặng bí mật cho bạn bè:</p>
-                    <ul>
-                        <li><b>🔒 Nhật ký riêng tư:</b> Chọn tùy chọn này nếu bạn chỉ muốn viết cho chính mình xem.</li>
-                        <li><b>🎁 Gửi lời nhắn riêng:</b> Chọn tên một bạn trong danh sách. Lời nhắn sẽ xuất hiện trực tiếp trong trang Nhật Ký của bạn đó!</li>
-                    </ul>
-                `
-            },
-            'gop-y': {
-                title: "🕵️ Hướng Dẫn: Góp Ý Ẩn Danh",
-                content: `
-                    <p>Hòm thư góp ý và trải lòng bảo mật 100%:</p>
-                    <ul>
-                        <li><b>Bảo mật:</b> Tên tác giả bài viết sẽ được hiển thị là <b>"Thành viên ẩn danh"</b>.</li>
-                        <li><b>Ứng dụng:</b> Dùng để góp ý thẳng thắn hoặc nhắn gửi những lời đáng yêu mà chưa dám nói trực tiếp.</li>
-                    </ul>
-                `
-            }
-        };
-
-        function openGuideModal() {
-            const guide = tabGuides[currentTab];
-            document.getElementById('modal-guide-title').innerText = guide.title;
-            document.getElementById('modal-guide-body').innerHTML = guide.content;
-            document.getElementById('guide-modal').classList.add('active');
-        }
-
-        function closeGuideModal() {
-            document.getElementById('guide-modal').classList.remove('active');
-        }
-
-        function closeGuideModalOnOutside(event) {
-            if (event.target.id === 'guide-modal') {
-                closeGuideModal();
-            }
-        }
-
         function handleImageSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
-
-            if (file.size > 3 * 1024 * 1024) {
-                alert("Ảnh này hơi lớn! Vui lòng chọn ảnh dung lượng dưới 3MB nhé.");
-                return;
-            }
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -799,16 +447,16 @@
                 formTitle.innerText = "📸 Chia sẻ hình ảnh kỷ niệm đẹp:";
                 sectionTitle.innerText = "📸 Album kỷ niệm đáng nhớ của nhóm:";
                 uploadWrapper.style.display = "block";
-                optionBox.innerHTML = `<span style="font-size: 13px; color: #e84393; font-weight: 600;">📸 Ảnh sẽ xuất hiện trong Album Kỷ Niệm cả nhóm</span>`;
+                optionBox.innerHTML = `<span style="font-size: 13px; color: #e84393; font-weight: 600;">📸 Ảnh sẽ đăng vào Album Kỷ Niệm</span>`;
             }
             else if (tab === 'nhatky') {
                 formTitle.innerText = "📖 Viết nhật ký hoặc Gửi lời nhắn riêng:";
-                sectionTitle.innerText = "📖 Nhật Ký của bạn (Bao gồm lời nhắn từ bạn bè):";
+                sectionTitle.innerText = "📖 Nhật Ký của bạn:";
                 
                 const otherMembers = ALL_MEMBERS.filter(m => m !== currentUser);
                 let optionsHTML = `<option value="private">🔒 Nhật ký riêng tư (Chỉ mình tôi)</option>`;
                 otherMembers.forEach(m => {
-                    optionsHTML += `<option value="target:${m}">🎁 Gửi riêng vào Nhật Ký của ${m}</option>`;
+                    optionsHTML += `<option value="target:${m}">🎁 Gửi riêng cho ${m}</option>`;
                 });
 
                 optionBox.innerHTML = `
@@ -840,7 +488,7 @@
             });
 
             if (filteredPosts.length === 0) {
-                container.innerHTML = `<div class="empty-msg">Chưa có bài đăng nào trong mục này!</div>`;
+                container.innerHTML = `<div class="empty-msg">Chưa có bài đăng nào trong mục này! Đăng bài đầu tiên nhé!</div>`;
                 return;
             }
 
@@ -848,22 +496,17 @@
                 const originalIndex = posts.findIndex(p => p.id === post.id);
                 const isMyPost = (post.author === currentUser);
 
-                let cardClass = "";
                 let badgeHTML = "";
                 let displayAuthor = post.author;
 
                 if (post.type === 'private') {
-                    cardClass = "private-card";
                     badgeHTML = `<span class="badge badge-private">🔒 Khóa sổ</span>`;
                 } else if (post.type === 'target') {
-                    cardClass = "gift-card";
                     badgeHTML = `<span class="badge badge-gift">🎁 Lời nhắn từ ${post.author}</span>`;
                 } else if (post.type === 'anonymous') {
-                    cardClass = "anonymous-card";
                     badgeHTML = `<span class="badge badge-anon">🕵️ Ẩn danh</span>`;
                     displayAuthor = "Thành viên ẩn danh";
                 } else if (post.type === 'memory') {
-                    cardClass = "memory-card";
                     badgeHTML = `<span class="badge badge-memory">📸 Kỷ Niệm</span>`;
                 } else {
                     badgeHTML = `<span class="badge badge-public">🌐 Công khai</span>`;
@@ -878,12 +521,12 @@
                     : `<span></span>`;
 
                 const cardHTML = `
-                    <div class="card ${cardClass}">
+                    <div class="card">
                         <div class="card-header">
                             <span class="author">${displayAuthor}</span>
                             <div>
                                 ${badgeHTML}
-                                <span class="post-time" style="margin-left: 8px;">🕒 ${post.time}</span>
+                                <span style="margin-left: 8px;">🕒 ${post.time}</span>
                             </div>
                         </div>
                         <div class="content">${post.content}</div>
@@ -903,7 +546,7 @@
             const content = contentInput.value.trim();
 
             if (!content && !base64Image) {
-                alert("Bạn chưa viết lời nhắn hoặc chưa chọn ảnh nào!");
+                alert("Vui lòng viết nội dung hoặc chọn ảnh!");
                 return;
             }
 
@@ -940,22 +583,12 @@
                 likes: 0
             };
 
-            try {
-                posts.unshift(newPost);
-                localStorage.setItem("groupPosts", JSON.stringify(posts));
-            } catch (e) {
-                alert("Dung lượng lưu trữ trình duyệt đã đầy do ảnh quá lớn! Hãy thử chọn ảnh nhỏ hơn nhé.");
-                posts.shift();
-                return;
-            }
+            posts.unshift(newPost);
+            localStorage.setItem("groupPosts", JSON.stringify(posts));
             
             contentInput.value = "";
             removeSelectedImage();
             renderPosts();
-
-            if (postType === "target") {
-                alert(`Đã gửi bí mật lời nhắn vào Nhật Ký của ${targetUser}! 😉`);
-            }
         }
 
         function deletePost(index) {
