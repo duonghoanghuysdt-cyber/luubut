@@ -31,7 +31,7 @@
 
         /* NỀN ĐEN CHỦ ĐẠO */
         body.dark-mode {
-            background-color: #0d0e12 !important; /* Đen tuyền sang trọng */
+            background-color: #0d0e12 !important;
             color: #ffffff;
         }
         body.light-mode {
@@ -131,7 +131,15 @@
             border: none;
         }
 
-        /* KHUNG VIẾT BÀI NỀN ĐEN XÁM */
+        /* BỐ CỤC CÁC TRANG NỘI DUNG */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* KHUNG KHỐI NỀN ĐEN XÁM */
         .post-card {
             background-color: #16171d;
             border-radius: 12px;
@@ -284,32 +292,61 @@
 
     <div class="container">
         
+        <!-- CÁC THẺ CHUYỂN TAB -->
         <div class="nav-tabs">
-            <button class="tab-btn active">📌 Lưu Bút Nhóm</button>
-            <button class="tab-btn">📸 Góc Kỷ Niệm (Ảnh)</button>
-            <button class="tab-btn">📖 Nhật Ký Cá Nhân</button>
-            <button class="tab-btn">🕵️ Góp Ý Ẩn Danh</button>
+            <button class="tab-btn active" onclick="switchTab('luu-but', this)">📌 Lưu Bút Nhóm</button>
+            <button class="tab-btn" onclick="switchTab('ky-niem', this)">📸 Góc Kỷ Niệm (Ảnh)</button>
+            <button class="tab-btn" onclick="switchTab('nhat-ky', this)">📖 Nhật Ký Cá Nhân</button>
+            <button class="tab-btn" onclick="switchTab('gop-y', this)">🕵️ Góp Ý Ẩn Danh</button>
         </div>
 
-        <div class="post-card">
-            <h3 style="color: var(--primary);" id="postTitle">✍️ Viết dòng lưu bút chung cho nhóm:</h3>
-            <textarea id="postContent" placeholder="Viết dòng tâm sự của bạn..."></textarea>
-            <div style="float: left; font-size: 14px; opacity: 0.8; margin-top: 8px;">
-                🌐 Chế độ: <span style="color: #4cd137;">Công khai cả nhóm</span>
+        <!-- TAB 1: LƯU BÚT NHÓM -->
+        <div id="tab-luu-but" class="tab-content active">
+            <div class="post-card">
+                <h3 style="color: var(--primary);" id="postTitle">✍️ Viết dòng lưu bút chung cho nhóm:</h3>
+                <textarea id="postContent" placeholder="Viết dòng tâm sự của bạn..."></textarea>
+                <div style="float: left; font-size: 14px; opacity: 0.8; margin-top: 8px;">
+                    🌐 Chế độ: <span style="color: #4cd137;">Công khai cả nhóm</span>
+                </div>
+                <button class="btn-post" onclick="submitPost()">ĐĂNG BÀI</button>
+                <div class="clear-fix"></div>
             </div>
-            <button class="btn-post" onclick="submitPost()">ĐĂNG BÀI</button>
-            <div class="clear-fix"></div>
+
+            <h3 style="margin-bottom: 15px;">📌 Tất cả lưu bút công khai:</h3>
+            <div class="posts-list" id="postsContainer">
+                <p style="text-align: center; opacity: 0.5;">Đang kết nối cơ sở dữ liệu...</p>
+            </div>
         </div>
 
-        <h3 style="margin-bottom: 15px;">📌 Tất cả lưu bút công khai:</h3>
-        <div class="posts-list" id="postsContainer">
-            <p style="text-align: center; opacity: 0.5;">Đang kết nối cơ sở dữ liệu...</p>
+        <!-- TAB 2: GÓC KỶ NIỆM (ẢNH) -->
+        <div id="tab-ky-niem" class="tab-content">
+            <div class="post-card">
+                <h3 style="color: var(--primary);">📸 Góc Kỷ Niệm (Ảnh)</h3>
+                <p style="margin-top: 10px; opacity: 0.8;">Nơi chia sẻ những bức ảnh đáng nhớ nhất của nhóm CONAN!</p>
+                <!-- Bạn có thể thêm chức năng upload ảnh ở đây sau này -->
+            </div>
+        </div>
+
+        <!-- TAB 3: NHẬT KÝ CÁ NHÂN -->
+        <div id="tab-nhat-ky" class="tab-content">
+            <div class="post-card">
+                <h3 style="color: var(--primary);">📖 Nhật Ký Cá Nhân</h3>
+                <p style="margin-top: 10px; opacity: 0.8;">Góc nhỏ bí mật - Chỉ có mình bạn xem được những dòng này.</p>
+            </div>
+        </div>
+
+        <!-- TAB 4: GÓP Ý ẨN DANH -->
+        <div id="tab-gop-y" class="tab-content">
+            <div class="post-card">
+                <h3 style="color: var(--primary);">🕵️ Góp Ý Ẩn Danh</h3>
+                <p style="margin-top: 10px; opacity: 0.8;">Nói thật lòng không lo ai biết là ai!</p>
+            </div>
         </div>
 
     </div>
 
     <script>
-        // BẢNG MÀU RIÊNG CHO TỪNG THÀNH VIÊN (KẾT HỢP ĐEN CHỦ ĐẠO + ÁNH MÀU RIÊNG)
+        // BẢNG MÀU RIÊNG CHO TỪNG THÀNH VIÊN
         const USER_THEMES = {
             "Lan": { 
                 primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1", 
@@ -355,6 +392,19 @@
         // Lấy tên từ localStorage
         const username = localStorage.getItem('currentUser') || 'Thành viên CONAN';
         document.getElementById('currentUser').innerText = username;
+
+        // HÀM CHUYỂN TAB NỘI DUNG
+        function switchTab(tabName, btnElement) {
+            // Khôi phục trạng thái active cho nút tab
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Ẩn tất cả các trang tab, chỉ hiện trang tương ứng
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
 
         // ÁP DỤNG THEME MÀU SẮC RIÊNG CỦA THÀNH VIÊN
         function applyUserTheme() {
