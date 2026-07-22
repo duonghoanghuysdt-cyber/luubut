@@ -81,7 +81,6 @@
             flex-wrap: wrap;
         }
 
-        /* NÚT ĐỔI MÀU NỀN TỐI / SÁNG */
         .btn-theme-toggle {
             background-color: var(--btn-toggle-bg);
             color: var(--text-color);
@@ -118,14 +117,12 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
-        /* --- CONTAINER CHÍNH (ĐÃ PHÓNG RỘNG CHO MÁY TÍNH) --- */
         .container {
             max-width: 1050px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* --- TAB CHUYỂN ĐỔI --- */
         .tab-container {
             display: flex;
             gap: 12px;
@@ -156,7 +153,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
 
-        /* --- FORM VIẾT BÀI --- */
         .post-form {
             background: var(--card-bg);
             padding: 25px;
@@ -218,7 +214,6 @@
             box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
         }
 
-        /* CHỌN ẢNH TỪ BỘ SƯU TẬP */
         .file-upload-wrapper {
             margin-bottom: 15px;
             display: none;
@@ -306,7 +301,6 @@
             transform: translateY(-1px);
         }
 
-        /* --- BÀI VIẾT --- */
         .cards-list {
             display: flex;
             flex-direction: column;
@@ -423,7 +417,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
-        /* --- POPUP MODAL HƯỚNG DẪN --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -502,7 +495,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- CẤU HÌNH BỐ CỤC DÀNH RIÊNG CHO ĐIỆN THOẠI (< 600px) --- */
         @media (max-width: 600px) {
             header {
                 padding: 12px 16px;
@@ -544,11 +536,9 @@
 </head>
 <body>
 
-    <!-- NAVBAR HEADER -->
     <header>
         <h1>CONAN</h1>
         <div class="user-info">
-            <!-- NÚT CHUYỂN ĐỔI GIAO DIỆN SÁNG / TỐI -->
             <button class="btn-theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">
                 <span id="theme-icon">🌙</span> <span id="theme-text">Nền tối</span>
             </button>
@@ -559,7 +549,6 @@
 
     <div class="container">
         
-        <!-- TAB CHUYỂN ĐỔI -->
         <div class="tab-container">
             <button class="tab-btn active" id="tab-luubut" onclick="switchTab('luubut')">📌 Lưu Bút Nhóm</button>
             <button class="tab-btn" id="tab-ky-niem" onclick="switchTab('ky-niem')">📸 Góc Kỷ Niệm (Ảnh)</button>
@@ -567,7 +556,6 @@
             <button class="tab-btn" id="tab-gop-y" onclick="switchTab('gop-y')">🕵️ Góp Ý Ẩn Danh</button>
         </div>
 
-        <!-- FORM VIẾT BÀI -->
         <div class="post-form">
             <div class="form-header-title">
                 <h3 id="form-title">✍️ Để lại một dòng kỷ niệm:</h3>
@@ -576,7 +564,6 @@
             
             <textarea id="post-content" placeholder="Viết dòng tâm sự của bạn..."></textarea>
 
-            <!-- CHỌN ẢNH TỪ BỘ SƯU TẬP -->
             <div class="file-upload-wrapper" id="upload-wrapper">
                 <label for="img-file-input" class="btn-select-image">📸 Chọn ảnh từ bộ sưu tập...</label>
                 <input type="file" id="img-file-input" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
@@ -593,12 +580,10 @@
             </div>
         </div>
 
-        <!-- DANH SÁCH BÀI VIẾT -->
         <h3 id="section-title" style="color: var(--text-color); margin-bottom: 15px; font-weight: 700;">📌 Tất cả kỷ niệm:</h3>
         <div class="cards-list" id="cards-container"></div>
     </div>
 
-    <!-- KHUNG POPUP HƯỚNG DẪN -->
     <div class="modal-overlay" id="guide-modal" onclick="closeGuideModalOnOutside(event)">
         <div class="modal-content">
             <div class="modal-header">
@@ -610,12 +595,19 @@
     </div>
 
     <script>
-        // CẤU HÌNH ĐƯỜNG DẪN SERVER (Thay đường dẫn Server backend Node.js / Python / Firebase của bạn ở đây)
-        const API_URL = "https://your-backend-api.com/api/posts";
+        // === ĐÃ ĐIỀN ĐỦ THÔNG SỐ CỦA BẠN ===
+        const JSONBIN_BIN_ID = "6a608f0ef5f4af5e29b01fce"; 
+        const JSONBIN_SECRET_KEY = "$2a$10$YFp2v0Sv88lfCCT/GhMp8OlDNveop9tTAz9kUff3glUltfM5F3USG"; 
 
+        const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
         const ALL_MEMBERS = ["Huy", "Lan", "Anh", "Thư", "Linh"];
 
-        /* --- XỬ LÝ CHUYỂN ĐỔI NỀN ĐEN / TRẮNG --- */
+        let posts = [];
+        let currentTab = "luubut";
+        let base64Image = "";
+
+        const currentUser = localStorage.getItem("currentUser") || "Huy";
+
         function initTheme() {
             const savedTheme = localStorage.getItem("preferredTheme");
             if (savedTheme === "dark") {
@@ -648,52 +640,19 @@
 
         initTheme();
 
-        // FIX TÊN HUY:
-        if (localStorage.getItem("currentUser") && localStorage.getItem("currentUser").includes("Huy")) {
-            localStorage.setItem("currentUser", "Huy");
-        }
-
-        /* --- BẢNG MÀU THEME ĐẦY ĐỦ CHO 5 THÀNH VIÊN --- */
         const USER_THEMES = {
-            "Lan": { 
-                primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1", 
-                bgGradient: "linear-gradient(135deg, #FFB2D1 0%, #FC8F66 100%)",
-                darkBgGradient: "linear-gradient(135deg, #3c1b28 0%, #331912 100%)"
-            },
-            "Thư": { 
-                primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8", 
-                bgGradient: "linear-gradient(135deg, #63e3d8 0%, #a8edd9 100%)",
-                darkBgGradient: "linear-gradient(135deg, #0d2b29 0%, #153b38 100%)"
-            },
-            "Anh": { 
-                primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed", 
-                bgGradient: "linear-gradient(135deg, #16213e 0%, #0f172a 100%)",
-                darkBgGradient: "linear-gradient(135deg, #0b1120 0%, #080c18 100%)"
-            },
-            "Linh": { 
-                primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675", 
-                bgGradient: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
-                darkBgGradient: "linear-gradient(135deg, #1e1b2e 0%, #121824 100%)"
-            },
-            "Huy": { 
-                primary: "#fd79a8", hover: "#e84393", accent: "#00cec9", 
-                bgGradient: "linear-gradient(135deg, #a8edd9 0%, #fed6e3 100%)",
-                darkBgGradient: "linear-gradient(135deg, #192a27 0%, #2d1a24 100%)"
-            }
+            "Lan": { primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1" },
+            "Thư": { primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8" },
+            "Anh": { primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed" },
+            "Linh": { primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675" },
+            "Huy": { primary: "#fd79a8", hover: "#e84393", accent: "#00cec9" }
         };
 
-        const currentUser = localStorage.getItem("currentUser");
-        if (!currentUser) {
-            window.location.href = "index.html";
-        } else {
-            document.getElementById('current-user-display').innerText = "👤 " + currentUser;
-            applyUserTheme(currentUser);
-        }
+        document.getElementById('current-user-display').innerText = "👤 " + currentUser;
+        applyUserTheme(currentUser);
 
         function applyUserTheme(user) {
-            const foundKey = Object.keys(USER_THEMES).find(key => key.toLowerCase().includes(user.toLowerCase()) || user.toLowerCase().includes(key.toLowerCase()));
-            const theme = USER_THEMES[foundKey || user];
-            
+            const theme = USER_THEMES[user];
             if (theme) {
                 document.documentElement.style.setProperty('--primary-color', theme.primary);
                 document.documentElement.style.setProperty('--primary-hover', theme.hover);
@@ -701,52 +660,55 @@
             }
         }
 
-        let posts = [];
-        let currentTab = "luubut";
-        let base64Image = "";
+        async function fetchPostsFromServer() {
+            try {
+                const response = await fetch(API_URL + "/latest", {
+                    headers: { "X-Master-Key": JSONBIN_SECRET_KEY }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    posts = data.record.posts || [];
+                    renderPosts();
+                }
+            } catch (error) {
+                console.error("Lỗi lấy dữ liệu:", error);
+            }
+        }
+
+        async function savePostsToServer(newPostsArray) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_SECRET_KEY
+                    },
+                    body: JSON.stringify({ posts: newPostsArray })
+                });
+                if (response.ok) {
+                    fetchPostsFromServer();
+                }
+            } catch (error) {
+                alert("Không thể lưu bài viết lên server. Kiểm tra lại kết nối mạng!");
+            }
+        }
 
         const tabGuides = {
             'luubut': {
                 title: "📌 Hướng Dẫn: Lưu Bút Nhóm",
-                content: `
-                    <p>Mục <b>Lưu Bút Nhóm</b> là bảng tin chung công khai cho toàn thể nhóm 5:</p>
-                    <ul>
-                        <li><b>Ai xem được?</b> Tất cả thành viên trong nhóm đều nhìn thấy bài đăng của bạn.</li>
-                        <li><b>Cách dùng:</b> Nhập lời chúc, cảm nghĩ hoặc kỷ niệm vào ô trống rồi bấm <b>ĐĂNG BÀI</b>.</li>
-                        <li><b>Tương tác:</b> Bạn có thể thả tim ❤️ bài viết của các bạn khác.</li>
-                    </ul>
-                `
+                content: `<p>Mục <b>Lưu Bút Nhóm</b> là bảng tin chung công khai cho toàn thể nhóm 5:</p><ul><li><b>Ai xem được?</b> Tất cả thành viên trong nhóm đều nhìn thấy bài đăng của bạn.</li><li><b>Cách dùng:</b> Nhập lời chúc, cảm nghĩ hoặc kỷ niệm vào ô trống rồi bấm <b>ĐĂNG BÀI</b>.</li></ul>`
             },
             'ky-niem': {
                 title: "📸 Hướng Dẫn: Góc Kỷ Niệm (Album Ảnh)",
-                content: `
-                    <p>Nơi lưu giữ những khoảnh khắc đẹp nhất của nhóm qua hình ảnh:</p>
-                    <ul>
-                        <li><b>Cách chọn ảnh:</b> Bấm vào nút <b>"📸 Chọn ảnh từ bộ sưu tập..."</b> để mở thư viện ảnh trên điện thoại/máy tính của bạn.</li>
-                        <li><b>Chú thích:</b> Bạn có thể viết thêm lời nhắn/kỷ niệm đi kèm bức ảnh.</li>
-                        <li><b>Lưu ý:</b> Chọn ảnh có dung lượng dưới 3MB để hệ thống lưu trữ tốt nhất.</li>
-                    </ul>
-                `
+                content: `<p>Nơi lưu giữ những khoảnh khắc đẹp nhất của nhóm qua hình ảnh:</p><ul><li><b>Cách chọn ảnh:</b> Bấm nút <b>"📸 Chọn ảnh..."</b> để mở thư viện ảnh.</li></ul>`
             },
             'nhatky': {
                 title: "📖 Hướng Dẫn: Nhật Ký Cá Nhân & Lời Nhắn",
-                content: `
-                    <p>Mục này cho phép bạn lưu giữ tâm tư riêng hoặc gửi quà tặng bí mật cho bạn bè:</p>
-                    <ul>
-                        <li><b>🔒 Nhật ký riêng tư:</b> Chọn tùy chọn này nếu bạn chỉ muốn viết cho chính mình xem.</li>
-                        <li><b>🎁 Gửi lời nhắn riêng:</b> Chọn tên một bạn trong danh sách. Lời nhắn sẽ xuất hiện trực tiếp trong trang Nhật Ký của bạn đó!</li>
-                    </ul>
-                `
+                content: `<p>Mục này cho phép bạn lưu giữ tâm tư riêng hoặc gửi quà tặng bí mật cho bạn bè:</p><ul><li><b>🔒 Nhật ký riêng tư:</b> Chỉ mình bạn xem được.</li><li><b>🎁 Gửi lời nhắn riêng:</b> Lời nhắn sẽ xuất hiện trực tiếp trong trang Nhật Ký của người đó.</li></ul>`
             },
             'gop-y': {
                 title: "🕵️ Hướng Dẫn: Góp Ý Ẩn Danh",
-                content: `
-                    <p>Hòm thư góp ý và trải lòng bảo mật 100%:</p>
-                    <ul>
-                        <li><b>Bảo mật:</b> Tên tác giả bài viết sẽ được hiển thị là <b>"Thành viên ẩn danh"</b>.</li>
-                        <li><b>Ứng dụng:</b> Dùng để góp ý thẳng thắn hoặc nhắn gửi những lời đáng yêu mà chưa dám nói trực tiếp.</li>
-                    </ul>
-                `
+                content: `<p>Hòm thư góp ý bảo mật 100%:</p><ul><li><b>Bảo mật:</b> Tên tác giả hiển thị là <b>"Thành viên ẩn danh"</b>.</li></ul>`
             }
         };
 
@@ -762,22 +724,18 @@
         }
 
         function closeGuideModalOnOutside(event) {
-            if (event.target.id === 'guide-modal') {
-                closeGuideModal();
-            }
+            if (event.target.id === 'guide-modal') closeGuideModal();
         }
 
         function handleImageSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
-
-            if (file.size > 3 * 1024 * 1024) {
-                alert("Ảnh này hơi lớn! Vui lòng chọn ảnh dung lượng dưới 3MB nhé.");
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ảnh quá lớn! Hãy chọn ảnh dưới 2MB.");
                 return;
             }
-
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = e => {
                 base64Image = e.target.result;
                 document.getElementById('preview-img').src = base64Image;
                 document.getElementById('preview-box').style.display = 'block';
@@ -791,24 +749,8 @@
             document.getElementById('preview-box').style.display = 'none';
         }
 
-        // --- CÁC HÀM GỌI API SERVER LƯU TRỮ VÀ ĐỒNG BỘ TRỰC TUYẾN ---
-        async function fetchPostsFromServer() {
-            try {
-                const response = await fetch(API_URL);
-                if (response.ok) {
-                    posts = await response.json();
-                } else {
-                    console.error("Lỗi khi tải bài đăng từ Server");
-                }
-            } catch (error) {
-                console.error("Không kết nối được tới Server:", error);
-            }
-            renderPosts();
-        }
-
         function switchTab(tab) {
             currentTab = tab;
-            
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
 
@@ -824,14 +766,12 @@
                 formTitle.innerText = "✍️ Viết dòng lưu bút chung cho nhóm:";
                 sectionTitle.innerText = "📌 Tất cả lưu bút công khai:";
                 optionBox.innerHTML = `<span style="font-size: 13px; color: #2ecc71; font-weight: 600;">🌐 Chế độ: Công Khai cả nhóm</span>`;
-            } 
-            else if (tab === 'ky-niem') {
+            } else if (tab === 'ky-niem') {
                 formTitle.innerText = "📸 Chia sẻ hình ảnh kỷ niệm đẹp:";
                 sectionTitle.innerText = "📸 Album kỷ niệm đáng nhớ của nhóm:";
                 uploadWrapper.style.display = "block";
                 optionBox.innerHTML = `<span style="font-size: 13px; color: #e84393; font-weight: 600;">📸 Ảnh sẽ xuất hiện trong Album Kỷ Niệm cả nhóm</span>`;
-            }
-            else if (tab === 'nhatky') {
+            } else if (tab === 'nhatky') {
                 formTitle.innerText = "📖 Viết nhật ký hoặc Gửi lời nhắn riêng:";
                 sectionTitle.innerText = "📖 Nhật Ký của bạn (Bao gồm lời nhắn từ bạn bè):";
                 
@@ -840,19 +780,14 @@
                 otherMembers.forEach(m => {
                     optionsHTML += `<option value="target:${m}">🎁 Gửi riêng vào Nhật Ký của ${m}</option>`;
                 });
-
-                optionBox.innerHTML = `
-                    <label style="font-size: 13px; color: var(--text-sub); font-weight: 600;">Gửi đến: </label>
-                    <select id="privacy-mode" class="privacy-select">${optionsHTML}</select>
-                `;
-            } 
-            else if (tab === 'gop-y') {
+                optionBox.innerHTML = `<label style="font-size: 13px; color: var(--text-sub); font-weight: 600;">Gửi đến: </label><select id="privacy-mode" class="privacy-select">${optionsHTML}</select>`;
+            } else if (tab === 'gop-y') {
                 formTitle.innerText = "🕵️ Gửi góp ý / tâm sự ẩn danh:";
                 sectionTitle.innerText = "🕵️ Hòm thư góp ý ẩn danh chung:";
                 optionBox.innerHTML = `<span style="font-size: 13px; color: #6c5ce7; font-weight: 600;">🕵️ Danh tính của bạn sẽ được BẢO MẬT 100%</span>`;
             }
 
-            fetchPostsFromServer();
+            renderPosts();
         }
 
         function renderPosts() {
@@ -898,14 +833,6 @@
                     badgeHTML = `<span class="badge badge-public">🌐 Công khai</span>`;
                 }
 
-                const imageHTML = post.imageUrl 
-                    ? `<img src="${post.imageUrl}" class="memory-img" alt="Kỷ niệm">` 
-                    : ``;
-
-                const deleteButtonHTML = (isMyPost || post.targetUser === currentUser)
-                    ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Xóa</button>` 
-                    : `<span></span>`;
-
                 const cardHTML = `
                     <div class="card ${cardClass}">
                         <div class="card-header">
@@ -916,10 +843,10 @@
                             </div>
                         </div>
                         <div class="content">${post.content}</div>
-                        ${imageHTML}
+                        ${post.imageUrl ? `<img src="${post.imageUrl}" class="memory-img">` : ''}
                         <div class="card-footer">
                             <button class="like-btn" onclick="likePost('${post.id}')">❤️ ${post.likes}</button>
-                            ${deleteButtonHTML}
+                            ${(isMyPost || post.targetUser === currentUser) ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Xóa</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -932,7 +859,7 @@
             const content = contentInput.value.trim();
 
             if (!content && !base64Image) {
-                alert("Bạn chưa viết lời nhắn hoặc chưa chọn ảnh nào!");
+                alert("Bạn chưa viết nội dung!");
                 return;
             }
 
@@ -942,13 +869,9 @@
             let postType = "public";
             let targetUser = "";
 
-            if (currentTab === 'luubut') {
-                postType = "public";
-            } else if (currentTab === 'ky-niem') {
-                postType = "memory";
-            } else if (currentTab === 'gop-y') {
-                postType = "anonymous";
-            } else if (currentTab === 'nhatky') {
+            if (currentTab === 'ky-niem') postType = "memory";
+            else if (currentTab === 'gop-y') postType = "anonymous";
+            else if (currentTab === 'nhatky') {
                 const privacySelect = document.getElementById('privacy-mode').value;
                 if (privacySelect.startsWith("target:")) {
                     postType = "target";
@@ -969,63 +892,22 @@
                 likes: 0
             };
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newPost)
-                });
-
-                if (response.ok) {
-                    contentInput.value = "";
-                    removeSelectedImage();
-                    fetchPostsFromServer();
-
-                    if (postType === "target") {
-                        alert(`Đã gửi bí mật lời nhắn vào Nhật Ký của ${targetUser}! 😉`);
-                    }
-                } else {
-                    alert("Gửi bài viết không thành công. Hãy thử lại!");
-                }
-            } catch (e) {
-                alert("Không thể kết nối tới Server!");
-            }
+            const updatedPosts = [newPost, ...posts];
+            contentInput.value = "";
+            removeSelectedImage();
+            await savePostsToServer(updatedPosts);
         }
 
         async function deletePost(id) {
-            if (confirm("Bạn có chắc muốn xóa bài viết này?")) {
-                try {
-                    const response = await fetch(`${API_URL}/${id}`, {
-                        method: 'DELETE'
-                    });
-                    if (response.ok) {
-                        fetchPostsFromServer();
-                    } else {
-                        alert("Không thể xóa bài đăng trên Server!");
-                    }
-                } catch (error) {
-                    console.error("Lỗi xóa bài đăng:", error);
-                }
+            if (confirm("Xóa bài viết này?")) {
+                const updatedPosts = posts.filter(p => p.id !== id);
+                await savePostsToServer(updatedPosts);
             }
         }
 
         async function likePost(id) {
-            const post = posts.find(p => p.id === id);
-            if (!post) return;
-
-            try {
-                const response = await fetch(`${API_URL}/${id}/like`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ likes: post.likes + 1 })
-                });
-
-                if (response.ok) {
-                    fetchPostsFromServer();
-                }
-            } catch (error) {
-                console.error("Lỗi thả tim bài đăng:", error);
-            }
+            const updatedPosts = posts.map(p => p.id === id ? {...p, likes: p.likes + 1} : p);
+            await savePostsToServer(updatedPosts);
         }
 
         function logout() {
@@ -1033,11 +915,10 @@
             window.location.href = "index.html";
         }
 
-        // Tải danh sách bài đăng mặc định khi khởi chạy trang
         switchTab('luubut');
-
-        // Lấy bài đăng định kỳ 5 giây/lần để đồng bộ tức thì với bài viết mới của bạn bè
-        setInterval(fetchPostsFromServer, 5000);
+        fetchPostsFromServer();
+        // Cập nhật dữ liệu từ các máy khác sau mỗi 3 giây
+        setInterval(fetchPostsFromServer, 3000);
     </script>
 </body>
 </html>
