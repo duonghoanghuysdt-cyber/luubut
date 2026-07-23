@@ -307,29 +307,67 @@
             gap: 20px;
         }
 
+        /* --- THẺ BÀI ĐĂNG (.CARD) - ĐÃ ĐƯỢC TỐI ƯU MÀU SẮC --- */
         .card {
             background: var(--card-bg);
-            border-left: 5px solid var(--primary-color);
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 22px 26px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             animation: fadeIn 0.4s ease;
             width: 100%;
             box-sizing: border-box;
             border: 1px solid var(--card-border);
-            border-left-width: 5px;
-            transition: background 0.4s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
         }
 
-        body.dark-theme .card.private-card { border-left-color: #f1c40f; background: #332b00; }
-        body.dark-theme .card.anonymous-card { border-left-color: #a29bfe; background: #222034; }
-        body.dark-theme .card.gift-card { border-left-color: #00cec9; background: #122b2c; }
-        body.dark-theme .card.memory-card { border-left-color: #ff7675; background: #2c1a1a; }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
 
-        body:not(.dark-theme) .card.private-card { border-left-color: #f1c40f; background: #fffdf0; }
-        body:not(.dark-theme) .card.anonymous-card { border-left-color: #a29bfe; background: #f8f7ff; }
-        body:not(.dark-theme) .card.gift-card { border-left-color: #00cec9; background: #f0ffff; }
-        body:not(.dark-theme) .card.memory-card { border-left-color: #ff7675; background: #fff8f8; }
+        /* Dark Mode: Nền mờ dịu mắt, viền trái nổi bật theo màu 5 thành viên */
+        body.dark-theme .card.private-card { 
+            border-left: 5px solid #fd79a8; /* Màu Huy: Hồng */
+            background: rgba(253, 121, 168, 0.08); 
+        }
+        body.dark-theme .card.gift-card { 
+            border-left: 5px solid #FC8F66; /* Màu Lan: Cam gạch */
+            background: rgba(252, 143, 102, 0.08); 
+        }
+        body.dark-theme .card.anonymous-card { 
+            border-left: 5px solid #a29bfe; /* Màu Linh: Tím */
+            background: rgba(162, 155, 254, 0.08); 
+        }
+        body.dark-theme .card.memory-card { 
+            border-left: 5px solid #63e3d8; /* Màu Thư: Xanh ngọc */
+            background: rgba(99, 227, 216, 0.08); 
+        }
+        body.dark-theme .card:not([class*="-card"]) { 
+            border-left: 5px solid #63b3ed; /* Màu Anh: Xanh dương */
+            background: rgba(99, 179, 237, 0.08); 
+        }
+
+        /* Light Mode: Tông màu pastel nhẹ nhàng, tươi sáng */
+        body:not(.dark-theme) .card.private-card { 
+            border-left: 5px solid #fd79a8; 
+            background: #fff5f8; 
+        }
+        body:not(.dark-theme) .card.gift-card { 
+            border-left: 5px solid #FC8F66; 
+            background: #fff6f2; 
+        }
+        body:not(.dark-theme) .card.anonymous-card { 
+            border-left: 5px solid #a29bfe; 
+            background: #f8f7ff; 
+        }
+        body:not(.dark-theme) .card.memory-card { 
+            border-left: 5px solid #63e3d8; 
+            background: #f0fdfc; 
+        }
+        body:not(.dark-theme) .card:not([class*="-card"]) { 
+            border-left: 5px solid #63b3ed; 
+            background: #f0f8ff; 
+        }
 
         .card-header {
             display: flex;
@@ -603,7 +641,6 @@
         const ALL_MEMBERS = ["Huy", "Lan", "Anh", "Thư", "Linh"];
 
         let posts = [];
-        let lastPostsHash = "";
         let currentTab = "luubut";
         let base64Image = "";
 
@@ -645,11 +682,7 @@
             "Lan": { primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1" },
             "Thư": { primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8" },
             "Anh": { primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed" },
-            "Linh": {
-                primary: "#00857c",
-                hover: "#00695f",
-                accent: "#4dd0c8"
-            },
+            "Linh": { primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675" },
             "Huy": { primary: "#fd79a8", hover: "#e84393", accent: "#00cec9" }
         };
 
@@ -672,33 +705,28 @@
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    const newPosts = data.record.posts || [];
-                    const newHash = JSON.stringify(newPosts);
-                    if(newHash!==lastPostsHash){
-                        lastPostsHash=newHash;
-                        posts=newPosts;
-                        renderPosts();
-                    }
+                    posts = data.record.posts || [];
+                    renderPosts();
                 }
-            } catch(error){console.error("Lỗi lấy dữ liệu:",error);}
+            } catch (error) {
+                console.error("Lỗi lấy dữ liệu:", error);
+            }
         }
 
         async function savePostsToServer(newPostsArray) {
             try {
-                const response = await fetch(API_URL,{
-                    method:"PUT",
-                    headers:{
-                        "Content-Type":"application/json",
-                        "X-Master-Key":JSONBIN_SECRET_KEY
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_SECRET_KEY
                     },
-                    body:JSON.stringify({posts:newPostsArray})
+                    body: JSON.stringify({ posts: newPostsArray })
                 });
-                if(response.ok){
-                    posts=newPostsArray;
-                    lastPostsHash=JSON.stringify(newPostsArray);
-                    renderPosts();
+                if (response.ok) {
+                    fetchPostsFromServer();
                 }
-            }catch(error){
+            } catch (error) {
                 alert("Không thể lưu bài viết lên server. Kiểm tra lại kết nối mạng!");
             }
         }
