@@ -25,7 +25,7 @@
         body.dark-theme {
             --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
             --header-bg: rgba(30, 30, 30, 0.85);
-            --card-bg: #262626;
+            --card-bg: #1e1e1e;
             --text-color: #f5f5f5;
             --text-sub: #b0b0b0;
             --input-bg: #1b1b1b;
@@ -307,67 +307,56 @@
             gap: 20px;
         }
 
-        /* --- THẺ BÀI ĐĂNG (.CARD) - ĐÃ ĐƯỢC TỐI ƯU MÀU SẮC --- */
+        /* --- SỬA LẠI TOÀN BỘ PHẦN CARD ĐỂ DỄ NHÌN VÀ ĐÚNG MÀU --- */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
             padding: 22px 26px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             animation: fadeIn 0.4s ease;
             width: 100%;
             box-sizing: border-box;
             border: 1px solid var(--card-border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+            transform: translateY(-2px);
         }
 
-        /* Dark Mode: Nền mờ dịu mắt, viền trái nổi bật theo màu 5 thành viên */
+        /* KHI Ở NỀN TỐI (DARK MODE) */
+        body.dark-theme .card {
+            background-color: #242526 !important; /* Đền màu tối sạch đẹp */
+            color: #e4e6eb !important;
+        }
+
         body.dark-theme .card.private-card { 
-            border-left: 5px solid #fd79a8; /* Màu Huy: Hồng */
-            background: rgba(253, 121, 168, 0.08); 
+            border-left: 5px solid #fd79a8 !important; /* Màu Huy: Hồng */
+            background: #2a2024 !important; 
         }
         body.dark-theme .card.gift-card { 
-            border-left: 5px solid #FC8F66; /* Màu Lan: Cam gạch */
-            background: rgba(252, 143, 102, 0.08); 
+            border-left: 5px solid #FC8F66 !important; /* Màu Lan: Cam gạch */
+            background: #2c2220 !important; 
         }
         body.dark-theme .card.anonymous-card { 
-            border-left: 5px solid #a29bfe; /* Màu Linh: Tím */
-            background: rgba(162, 155, 254, 0.08); 
+            border-left: 5px solid #a29bfe !important; /* Màu Linh: Tím */
+            background: #242230 !important; 
         }
         body.dark-theme .card.memory-card { 
-            border-left: 5px solid #63e3d8; /* Màu Thư: Xanh ngọc */
-            background: rgba(99, 227, 216, 0.08); 
+            border-left: 5px solid #63e3d8 !important; /* Màu Thư: Xanh ngọc */
+            background: #1d2b2a !important; 
         }
-        body.dark-theme .card:not([class*="-card"]) { 
-            border-left: 5px solid #63b3ed; /* Màu Anh: Xanh dương */
-            background: rgba(99, 179, 237, 0.08); 
+        body.dark-theme .card.public-card { 
+            border-left: 5px solid #63b3ed !important; /* Màu Anh: Xanh dương */
+            background: #1e2630 !important; 
         }
 
-        /* Light Mode: Tông màu pastel nhẹ nhàng, tươi sáng */
-        body:not(.dark-theme) .card.private-card { 
-            border-left: 5px solid #fd79a8; 
-            background: #fff5f8; 
-        }
-        body:not(.dark-theme) .card.gift-card { 
-            border-left: 5px solid #FC8F66; 
-            background: #fff6f2; 
-        }
-        body:not(.dark-theme) .card.anonymous-card { 
-            border-left: 5px solid #a29bfe; 
-            background: #f8f7ff; 
-        }
-        body:not(.dark-theme) .card.memory-card { 
-            border-left: 5px solid #63e3d8; 
-            background: #f0fdfc; 
-        }
-        body:not(.dark-theme) .card:not([class*="-card"]) { 
-            border-left: 5px solid #63b3ed; 
-            background: #f0f8ff; 
-        }
+        /* KHI Ở NỀN SÁNG (LIGHT MODE) */
+        body:not(.dark-theme) .card.private-card { border-left: 5px solid #fd79a8; background: #fff5f8; }
+        body:not(.dark-theme) .card.gift-card { border-left: 5px solid #FC8F66; background: #fff6f2; }
+        body:not(.dark-theme) .card.anonymous-card { border-left: 5px solid #a29bfe; background: #f8f7ff; }
+        body:not(.dark-theme) .card.memory-card { border-left: 5px solid #63e3d8; background: #f0fdfc; }
+        body:not(.dark-theme) .card.public-card { border-left: 5px solid #63b3ed; background: #f0f8ff; }
 
         .card-header {
             display: flex;
@@ -389,15 +378,16 @@
         .badge {
             font-size: 11px;
             font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
         }
 
-        .badge-private { background: #ffeaa7; color: #d63031; }
-        .badge-public { background: #e8f8f5; color: #2ecc71; }
-        .badge-anon { background: #e0dbff; color: #6c5ce7; }
-        .badge-gift { background: #e0f7fa; color: #00838f; }
-        .badge-memory { background: #ffe0e0; color: #d63031; }
+        .badge-private { background: #ff7675; color: #ffffff; }
+        .badge-public { background: #2ecc71; color: #ffffff; }
+        .badge-anon { background: #6c5ce7; color: #ffffff; }
+        .badge-gift { background: #e67e22; color: #ffffff; }
+        .badge-memory { background: #00cec9; color: #ffffff; }
 
         .content {
             font-size: 15px;
@@ -461,7 +451,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             display: flex;
             justify-content: center;
@@ -484,7 +474,7 @@
             width: 90%;
             max-width: 500px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             position: relative;
             transform: translateY(-20px);
             transition: transform 0.3s ease;
@@ -633,7 +623,6 @@
     </div>
 
     <script>
-        // === ĐÃ ĐIỀN ĐỦ THÔNG SỐ CỦA BẠN ===
         const JSONBIN_BIN_ID = "6a608f0ef5f4af5e29b01fce"; 
         const JSONBIN_SECRET_KEY = "$2a$10$YFp2v0Sv88lfCCT/GhMp8OlDNveop9tTAz9kUff3glUltfM5F3USG"; 
 
@@ -850,7 +839,7 @@
             filteredPosts.forEach((post) => {
                 const isMyPost = (post.author === currentUser);
 
-                let cardClass = "";
+                let cardClass = "public-card";
                 let badgeHTML = "";
                 let displayAuthor = post.author;
 
@@ -868,6 +857,7 @@
                     cardClass = "memory-card";
                     badgeHTML = `<span class="badge badge-memory">📸 Kỷ Niệm</span>`;
                 } else {
+                    cardClass = "public-card";
                     badgeHTML = `<span class="badge badge-public">🌐 Công khai</span>`;
                 }
 
@@ -955,7 +945,6 @@
 
         switchTab('luubut');
         fetchPostsFromServer();
-        // Cập nhật dữ liệu từ các máy khác sau mỗi 3 giây
         setInterval(fetchPostsFromServer, 3000);
     </script>
 </body>
