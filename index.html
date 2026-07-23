@@ -3,324 +3,967 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xác minh danh tính - LƯU BÚT NHÓM</title>
+    <title>Trang Chủ - Lưu Bút & Kỷ Niệm Nhóm 5</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* --- KHAI BÁO BIẾN MÀU MẶC ĐỊNH (LIGHT MODE) --- */
+        :root {
+            --primary-color: #ff69b4;
+            --primary-hover: #ff3399;
+            --accent-color: #00cec9;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --card-bg: #ffffff;
+            --text-color: #2d3436;
+            --text-sub: #636e72;
+            --input-bg: #f8f9fa;
+            --input-border: #dfe6e9;
+            --card-border: rgba(0, 0, 0, 0.06);
+            --btn-toggle-bg: #f1f2f6;
+        }
+
+        /* --- CHẾ ĐỘ NỀN ĐEN (DARK MODE) --- */
+        body.dark-theme {
+            --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            --header-bg: rgba(30, 30, 30, 0.85);
+            --card-bg: #262626;
+            --text-color: #f5f5f5;
+            --text-sub: #b0b0b0;
+            --input-bg: #1b1b1b;
+            --input-border: #3a3a3a;
+            --card-border: rgba(255, 255, 255, 0.1);
+            --btn-toggle-bg: #333333;
         }
 
         body {
-            background: linear-gradient(135deg, #121316 0%, #1c1d22 100%);
-            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        /* --- NAVBAR / HEADER --- */
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            padding: 15px 35px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--card-border);
+            transition: background 0.4s ease;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        /* KHUNG ĐĂNG NHẬP LÀM MỚI (GLASSMORPHISM & GLOW EFFECT) */
-        .login-card {
-            background: rgba(33, 35, 40, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 45px 35px;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
-                        0 0 25px rgba(255, 102, 178, 0.08);
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-
-        .detective-icon {
-            font-size: 52px;
-            display: inline-block;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
-        }
-
-        .login-card h2 {
-            background: linear-gradient(135deg, #ff66b2 0%, #ff85c2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            font-size: 26px;
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 24px;
+            transition: color 0.3s;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        .login-card p {
-            color: #9aa0a6;
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #c5c7ce;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .input-wrapper {
-            position: relative;
+        .user-info {
             display: flex;
             align-items: center;
+            gap: 12px;
+            color: var(--text-color);
+            font-weight: 600;
+            flex-wrap: wrap;
         }
 
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            font-size: 16px;
-            opacity: 0.7;
+        .btn-theme-toggle {
+            background-color: var(--btn-toggle-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
         }
 
-        .form-group input {
+        .btn-theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 7px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--text-sub);
+            border: 1px solid var(--input-border);
+            padding: 12px 22px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .post-form {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: background 0.4s ease;
+        }
+
+        .form-header-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .post-form h3 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 17px;
+            transition: color 0.3s;
+        }
+
+        .btn-see-more {
+            color: var(--text-sub);
+            font-size: 13px;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .btn-see-more:hover {
+            color: var(--primary-color);
+        }
+
+        .post-form textarea {
             width: 100%;
-            padding: 13px 16px 13px 42px;
-            background: rgba(18, 19, 22, 0.6);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 14px;
-            color: #ffffff;
-            outline: none;
-            transition: all 0.25s ease;
-        }
-
-        .form-group input::placeholder {
-            color: #5f6368;
-        }
-
-        .form-group input:focus {
-            border-color: #ff66b2;
-            background: rgba(18, 19, 22, 0.9);
-            box-shadow: 0 0 12px rgba(255, 102, 178, 0.2);
-        }
-
-        /* NÚT TIẾP TỤC ĐƯỢC NÂNG CẤP DẢI MÀU & HIỆU ỨNG */
-        .btn-login {
-            width: 100%;
+            height: 110px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-color);
             padding: 14px;
-            background: linear-gradient(135deg, #ff66b2 0%, #e05297 100%);
+            box-sizing: border-box;
+            resize: vertical;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 14px;
+            font-family: inherit;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .post-form textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+        }
+
+        .file-upload-wrapper {
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .btn-select-image {
+            display: inline-block;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px dashed var(--primary-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .image-preview-box {
+            margin-top: 10px;
+            position: relative;
+            display: none;
+            max-width: 200px;
+        }
+
+        .image-preview-box img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--input-border);
+        }
+
+        .btn-remove-img {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4d4d;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            letter-spacing: 0.8px;
-            box-shadow: 0 6px 20px rgba(255, 102, 178, 0.3);
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 24px;
+            text-align: center;
         }
 
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 102, 178, 0.45);
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .btn-login:active {
-            transform: translateY(0);
-        }
-
-        .error-msg {
-            color: #ff5252;
-            font-size: 13px;
-            margin-top: 15px;
-            display: none;
+        .privacy-select {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
             font-weight: 500;
         }
 
-        /* POPUP CÂU HỎI */
+        .btn-send {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            font-size: 14px;
+        }
+
+        .btn-send:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- THẺ BÀI ĐĂNG (.CARD) --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 22px 26px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 0.4s ease;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--card-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Dark Mode */
+        body.dark-theme .card.private-card { 
+            border-left: 5px solid #fd79a8; 
+            background: rgba(253, 121, 168, 0.08); 
+        }
+        body.dark-theme .card.gift-card { 
+            border-left: 5px solid #FC8F66; 
+            background: rgba(252, 143, 102, 0.08); 
+        }
+        body.dark-theme .card.anonymous-card { 
+            border-left: 5px solid #a29bfe; 
+            background: rgba(162, 155, 254, 0.08); 
+        }
+        body.dark-theme .card.memory-card { 
+            border-left: 5px solid #63e3d8; 
+            background: rgba(99, 227, 216, 0.08); 
+        }
+        body.dark-theme .card:not([class*="-card"]) { 
+            border-left: 5px solid #63b3ed; 
+            background: rgba(99, 179, 237, 0.08); 
+        }
+
+        /* Light Mode */
+        body:not(.dark-theme) .card.private-card { 
+            border-left: 5px solid #fd79a8; 
+            background: #fff5f8; 
+        }
+        body:not(.dark-theme) .card.gift-card { 
+            border-left: 5px solid #FC8F66; 
+            background: #fff6f2; 
+        }
+        body:not(.dark-theme) .card.anonymous-card { 
+            border-left: 5px solid #a29bfe; 
+            background: #f8f7ff; 
+        }
+        body:not(.dark-theme) .card.memory-card { 
+            border-left: 5px solid #63e3d8; 
+            background: #f0fdfc; 
+        }
+        body:not(.dark-theme) .card:not([class*="-card"]) { 
+            border-left: 5px solid #63b3ed; 
+            background: #f0f8ff; 
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        .author {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .badge-private { background: #ffeaa7; color: #d63031; }
+        .badge-public { background: #e8f8f5; color: #2ecc71; }
+        .badge-anon { background: #e0dbff; color: #6c5ce7; }
+        .badge-gift { background: #e0f7fa; color: #00838f; }
+        .badge-memory { background: #ffe0e0; color: #d63031; }
+
+        .content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-color);
+            white-space: pre-line;
+            margin-bottom: 15px;
+        }
+
+        .memory-img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: block;
+            object-fit: cover;
+            border: 1px solid var(--input-border);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 5px;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: #e84393;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff7675;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0;
+        }
+
+        .delete-btn:hover { text-decoration: underline; }
+
+        .empty-msg {
+            color: var(--text-sub);
+            font-style: italic;
+            text-align: center;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(6px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 999;
+            z-index: 1000;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
         .modal-overlay.active {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
         }
 
-        .modal-card {
-            background: #212328;
-            padding: 35px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 102, 178, 0.4);
-            text-align: center;
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 16px;
             width: 90%;
-            max-width: 380px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
-                        0 0 25px rgba(255, 102, 178, 0.2);
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--card-border);
         }
 
-        .modal-card h3 {
-            color: #ff66b2;
-            font-size: 20px;
-            margin-bottom: 10px;
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
         }
 
-        .modal-card p {
-            color: #d4d4d4;
-            font-size: 15px;
-            margin-bottom: 25px;
-        }
-
-        .modal-btns {
+        .modal-header {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            position: relative;
-            min-height: 50px;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .btn-yes {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #ff66b2 0%, #e05297 100%);
-            color: white;
+        .modal-header h4 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: none;
             border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
+            color: var(--text-sub);
+            font-size: 20px;
             cursor: pointer;
-            flex: 1;
-            box-shadow: 0 4px 15px rgba(255, 102, 178, 0.3);
-            transition: all 0.2s ease;
+            font-weight: bold;
         }
 
-        .btn-yes:hover {
-            transform: translateY(-1px);
+        .modal-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-color);
         }
 
-        .btn-no {
-            padding: 12px 24px;
-            background: #2d3038;
-            color: #8a8f9d;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            position: relative;
-            flex: 1;
-            transition: all 0.2s ease;
+        .modal-body ul { padding-left: 20px; margin: 10px 0; }
+        .modal-body li { margin-bottom: 8px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .btn-theme-toggle {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .btn-logout {
+                padding: 5px 12px;
+                font-size: 13px;
+            }
+
+            .container {
+                margin: 15px auto;
+                padding: 0 12px;
+            }
+
+            .post-form {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <span class="detective-icon">🕵️‍♂️</span>
-        <h2>LƯU BÚT NHÓM</h2>
-        <p>Xác minh danh tính 1 trong 5 thành viên</p>
+    <header>
+        <h1>CONAN</h1>
+        <div class="user-info">
+            <button class="btn-theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">
+                <span id="theme-icon">🌙</span> <span id="theme-text">Nền tối</span>
+            </button>
+            <span id="current-user-display">Thành viên</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+        </div>
+    </header>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Tên của bạn:</label>
-                <div class="input-wrapper">
-                    <span class="input-icon">👤</span>
-                    <input type="text" id="username" placeholder="Ví dụ: Huy, Lan, Anh, Thư, Linh" autocomplete="off" required>
+    <div class="container">
+        
+        <div class="tab-container">
+            <button class="tab-btn active" id="tab-luubut" onclick="switchTab('luubut')">📌 Lưu Bút Nhóm</button>
+            <button class="tab-btn" id="tab-ky-niem" onclick="switchTab('ky-niem')">📸 Góc Kỷ Niệm (Ảnh)</button>
+            <button class="tab-btn" id="tab-nhatky" onclick="switchTab('nhatky')">📖 Nhật Ký Cá Nhân</button>
+            <button class="tab-btn" id="tab-gop-y" onclick="switchTab('gop-y')">🕵️ Góp Ý Ẩn Danh</button>
+        </div>
+
+        <div class="post-form">
+            <div class="form-header-title">
+                <h3 id="form-title">✍️ Để lại một dòng kỷ niệm:</h3>
+                <span class="btn-see-more" onclick="openGuideModal()">Xem thêm (Hướng dẫn) 💡</span>
+            </div>
+            
+            <textarea id="post-content" placeholder="Viết dòng tâm sự của bạn..."></textarea>
+
+            <div class="file-upload-wrapper" id="upload-wrapper">
+                <label for="img-file-input" class="btn-select-image">📸 Chọn ảnh từ bộ sưu tập...</label>
+                <input type="file" id="img-file-input" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
+                
+                <div class="image-preview-box" id="preview-box">
+                    <img id="preview-img" src="" alt="Xem trước">
+                    <button class="btn-remove-img" onclick="removeSelectedImage()">✕</button>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="password">Mật khẩu:</label>
-                <div class="input-wrapper">
-                    <span class="input-icon">🔑</span>
-                    <input type="password" id="password" placeholder="Nhập mật khẩu của bạn..." required>
-                </div>
+            
+            <div class="form-options">
+                <div id="option-box"></div>
+                <button class="btn-send" onclick="addPost()">ĐĂNG BÀI</button>
             </div>
+        </div>
 
-            <button type="submit" class="btn-login">TIẾP TỤC</button>
-            <div id="errorMsg" class="error-msg">Tên hoặc mật khẩu không chính xác!</div>
-        </form>
+        <h3 id="section-title" style="color: var(--text-color); margin-bottom: 15px; font-weight: 700;">📌 Tất cả kỷ niệm:</h3>
+        <div class="cards-list" id="cards-container"></div>
     </div>
 
-    <!-- KHUNG XÁC MINH CÂU HỎI ĐẸP TRAI -->
-    <div class="modal-overlay" id="handsomeModal">
-        <div class="modal-card">
-            <span style="font-size: 40px; display: block; margin-bottom: 10px;">😎</span>
-            <h3>CÂU HỎI BẢO MẬT</h3>
-            <p>Cho hỏi thật lòng: <b>Huy có đẹp trai không?</b></p>
-            <div class="modal-btns">
-                <button class="btn-yes" onclick="finishLogin()">Có, quá đẹp trai! ❤️</button>
-                <button class="btn-no" id="btnNo" onmouseover="dodgeButton()" onclick="wrongAnswer()">Không ❌</button>
+    <div class="modal-overlay" id="guide-modal" onclick="closeGuideModalOnOutside(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-guide-title">💡 Hướng Dẫn Sử Dụng</h4>
+                <button class="modal-close" onclick="closeGuideModal()">✕</button>
             </div>
+            <div class="modal-body" id="modal-guide-body"></div>
         </div>
     </div>
 
     <script>
-        const ACCOUNTS = {
-            "huy": "huy123",
-            "lan": "lan123",
-            "thư": "thu123",
-            "thu": "thu123",
-            "linh": "linh123",
-            "anh": "anh123"
-        };
+        const JSONBIN_BIN_ID = "6a608f0ef5f4af5e29b01fce"; 
+        const JSONBIN_SECRET_KEY = "$2a$10$YFp2v0Sv88lfCCT/GhMp8OlDNveop9tTAz9kUff3glUltfM5F3USG"; 
 
-        const NAME_MAP = {
-            "huy": "Huy",
-            "lan": "Lan",
-            "thư": "Thư",
-            "thu": "Thư",
-            "linh": "Linh",
-            "anh": "Anh"
-        };
+        const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+        const ALL_MEMBERS = ["Huy", "Lan", "Anh", "Thư", "Linh"];
 
-        let pendingUser = "";
+        let posts = [];
+        let currentTab = "luubut";
+        let base64Image = "";
 
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            
-            const rawUser = document.getElementById("username").value.trim();
-            const inputUser = rawUser.toLowerCase();
-            const inputPass = document.getElementById("password").value;
-            const errorMsg = document.getElementById("errorMsg");
+        const currentUser = localStorage.getItem("currentUser") || "Huy";
 
-            if (ACCOUNTS[inputUser] && ACCOUNTS[inputUser] === inputPass) {
-                pendingUser = NAME_MAP[inputUser];
-                document.getElementById("handsomeModal").classList.add("active");
+        function initTheme() {
+            const savedTheme = localStorage.getItem("preferredTheme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-theme");
+                document.getElementById("theme-icon").innerText = "☀️";
+                document.getElementById("theme-text").innerText = "Nền sáng";
             } else {
-                errorMsg.innerText = "Tên thành viên hoặc mật khẩu không đúng!";
-                errorMsg.style.display = "block";
+                document.body.classList.remove("dark-theme");
+                document.getElementById("theme-icon").innerText = "🌙";
+                document.getElementById("theme-text").innerText = "Nền tối";
             }
-        });
-
-        function dodgeButton() {
-            const btnNo = document.getElementById("btnNo");
-            const x = Math.random() * 160 - 80;
-            const y = Math.random() * 100 - 50;
-            btnNo.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        function finishLogin() {
-            localStorage.setItem("currentUser", pendingUser);
-            window.location.href = "home.html";
+        function toggleTheme() {
+            document.body.classList.toggle("dark-theme");
+            const isDark = document.body.classList.contains("dark-theme");
+            
+            if (isDark) {
+                document.getElementById("theme-icon").innerText = "☀️";
+                document.getElementById("theme-text").innerText = "Nền sáng";
+                localStorage.setItem("preferredTheme", "dark");
+            } else {
+                document.getElementById("theme-icon").innerText = "🌙";
+                document.getElementById("theme-text").innerText = "Nền tối";
+                localStorage.setItem("preferredTheme", "light");
+            }
+
+            if (currentUser) applyUserTheme(currentUser);
         }
+
+        initTheme();
+
+        const USER_THEMES = {
+            "Lan": { primary: "#FC8F66", hover: "#FFB2D1", accent: "#FFB2D1" },
+            "Thư": { primary: "#63e3d8", hover: "#43c4ba", accent: "#63e3d8" },
+            "Anh": { primary: "#2a4365", hover: "#1a365d", accent: "#63b3ed" },
+            "Linh": { primary: "#a29bfe", hover: "#6c5ce7", accent: "#ff7675" },
+            "Huy": { primary: "#fd79a8", hover: "#e84393", accent: "#00cec9" }
+        };
+
+        document.getElementById('current-user-display').innerText = "👤 " + currentUser;
+        applyUserTheme(currentUser);
+
+        function applyUserTheme(user) {
+            const theme = USER_THEMES[user];
+            if (theme) {
+                document.documentElement.style.setProperty('--primary-color', theme.primary);
+                document.documentElement.style.setProperty('--primary-hover', theme.hover);
+                document.documentElement.style.setProperty('--accent-color', theme.accent);
+            }
+        }
+
+        // TỐI ƯU HÀM LẤY DỮ LIỆU: Chỉ vẽ lại UI khi dữ liệu thực sự có sự thay đổi
+        async function fetchPostsFromServer() {
+            try {
+                const response = await fetch(API_URL + "/latest", {
+                    headers: { "X-Master-Key": JSONBIN_SECRET_KEY }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const newPosts = data.record.posts || [];
+                    
+                    // So sánh dữ liệu cũ và mới, nếu có khác biệt mới vẽ lại UI
+                    if (JSON.stringify(newPosts) !== JSON.stringify(posts)) {
+                        posts = newPosts;
+                        renderPosts();
+                    }
+                }
+            } catch (error) {
+                console.error("Lỗi lấy dữ liệu:", error);
+            }
+        }
+
+        async function savePostsToServer(newPostsArray) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_SECRET_KEY
+                    },
+                    body: JSON.stringify({ posts: newPostsArray })
+                });
+                if (response.ok) {
+                    posts = newPostsArray;
+                    renderPosts();
+                }
+            } catch (error) {
+                alert("Không thể lưu bài viết lên server. Kiểm tra lại kết nối mạng!");
+            }
+        }
+
+        const tabGuides = {
+            'luubut': {
+                title: "📌 Hướng Dẫn: Lưu Bút Nhóm",
+                content: `<p>Mục <b>Lưu Bút Nhóm</b> là bảng tin chung công khai cho toàn thể nhóm 5:</p><ul><li><b>Ai xem được?</b> Tất cả thành viên trong nhóm đều nhìn thấy bài đăng của bạn.</li><li><b>Cách dùng:</b> Nhập lời chúc, cảm nghĩ hoặc kỷ niệm vào ô trống rồi bấm <b>ĐĂNG BÀI</b>.</li></ul>`
+            },
+            'ky-niem': {
+                title: "📸 Hướng Dẫn: Góc Kỷ Niệm (Album Ảnh)",
+                content: `<p>Nơi lưu giữ những khoảnh khắc đẹp nhất của nhóm qua hình ảnh:</p><ul><li><b>Cách chọn ảnh:</b> Bấm nút <b>"📸 Chọn ảnh..."</b> để mở thư viện ảnh.</li></ul>`
+            },
+            'nhatky': {
+                title: "📖 Hướng Dẫn: Nhật Ký Cá Nhân & Lời Nhắn",
+                content: `<p>Mục này cho phép bạn lưu giữ tâm tư riêng hoặc gửi quà tặng bí mật cho bạn bè:</p><ul><li><b>🔒 Nhật ký riêng tư:</b> Chỉ mình bạn xem được.</li><li><b>🎁 Gửi lời nhắn riêng:</b> Lời nhắn sẽ xuất hiện trực tiếp trong trang Nhật Ký của người đó.</li></ul>`
+            },
+            'gop-y': {
+                title: "🕵️ Hướng Dẫn: Góp Ý Ẩn Danh",
+                content: `<p>Hòm thư góp ý bảo mật 100%:</p><ul><li><b>Bảo mật:</b> Tên tác giả hiển thị là <b>"Thành viên ẩn danh"</b>.</li></ul>`
+            }
+        };
+
+        function openGuideModal() {
+            const guide = tabGuides[currentTab];
+            document.getElementById('modal-guide-title').innerText = guide.title;
+            document.getElementById('modal-guide-body').innerHTML = guide.content;
+            document.getElementById('guide-modal').classList.add('active');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.remove('active');
+        }
+
+        function closeGuideModalOnOutside(event) {
+            if (event.target.id === 'guide-modal') closeGuideModal();
+        }
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ảnh quá lớn! Hãy chọn ảnh dưới 2MB.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                base64Image = e.target.result;
+                document.getElementById('preview-img').src = base64Image;
+                document.getElementById('preview-box').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeSelectedImage() {
+            base64Image = "";
+            document.getElementById('img-file-input').value = "";
+            document.getElementById('preview-box').style.display = 'none';
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+
+            const optionBox = document.getElementById('option-box');
+            const formTitle = document.getElementById('form-title');
+            const sectionTitle = document.getElementById('section-title');
+            const uploadWrapper = document.getElementById('upload-wrapper');
+
+            removeSelectedImage();
+            uploadWrapper.style.display = "none";
+
+            if (tab === 'luubut') {
+                formTitle.innerText = "✍️ Viết dòng lưu bút chung cho nhóm:";
+                sectionTitle.innerText = "📌 Tất cả lưu bút công khai:";
+                optionBox.innerHTML = `<span style="font-size: 13px; color: #2ecc71; font-weight: 600;">🌐 Chế độ: Công Khai cả nhóm</span>`;
+            } else if (tab === 'ky-niem') {
+                formTitle.innerText = "📸 Chia sẻ hình ảnh kỷ niệm đẹp:";
+                sectionTitle.innerText = "📸 Album kỷ niệm đáng nhớ của nhóm:";
+                uploadWrapper.style.display = "block";
+                optionBox.innerHTML = `<span style="font-size: 13px; color: #e84393; font-weight: 600;">📸 Ảnh sẽ xuất hiện trong Album Kỷ Niệm cả nhóm</span>`;
+            } else if (tab === 'nhatky') {
+                formTitle.innerText = "📖 Viết nhật ký hoặc Gửi lời nhắn riêng:";
+                sectionTitle.innerText = "📖 Nhật Ký của bạn (Bao gồm lời nhắn từ bạn bè):";
+                
+                const otherMembers = ALL_MEMBERS.filter(m => m !== currentUser);
+                let optionsHTML = `<option value="private">🔒 Nhật ký riêng tư (Chỉ mình tôi)</option>`;
+                otherMembers.forEach(m => {
+                    optionsHTML += `<option value="target:${m}">🎁 Gửi riêng vào Nhật Ký của ${m}</option>`;
+                });
+                optionBox.innerHTML = `<label style="font-size: 13px; color: var(--text-sub); font-weight: 600;">Gửi đến: </label><select id="privacy-mode" class="privacy-select">${optionsHTML}</select>`;
+            } else if (tab === 'gop-y') {
+                formTitle.innerText = "🕵️ Gửi góp ý / tâm sự ẩn danh:";
+                sectionTitle.innerText = "🕵️ Hòm thư góp ý ẩn danh chung:";
+                optionBox.innerHTML = `<span style="font-size: 13px; color: #6c5ce7; font-weight: 600;">🕵️ Danh tính của bạn sẽ được BẢO MẬT 100%</span>`;
+            }
+
+            renderPosts();
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = "";
+
+            const filteredPosts = posts.filter(post => {
+                if (currentTab === 'luubut') return post.type === 'public';
+                if (currentTab === 'ky-niem') return post.type === 'memory';
+                if (currentTab === 'nhatky') {
+                    return (post.type === 'private' && post.author === currentUser) || 
+                           (post.type === 'target' && post.targetUser === currentUser);
+                } 
+                if (currentTab === 'gop-y') return post.type === 'anonymous';
+            });
+
+            if (filteredPosts.length === 0) {
+                container.innerHTML = `<div class="empty-msg">Chưa có bài đăng nào trong mục này!</div>`;
+                return;
+            }
+
+            filteredPosts.forEach((post) => {
+                const isMyPost = (post.author === currentUser);
+
+                let cardClass = "";
+                let badgeHTML = "";
+                let displayAuthor = post.author;
+
+                if (post.type === 'private') {
+                    cardClass = "private-card";
+                    badgeHTML = `<span class="badge badge-private">🔒 Khóa sổ</span>`;
+                } else if (post.type === 'target') {
+                    cardClass = "gift-card";
+                    badgeHTML = `<span class="badge badge-gift">🎁 Lời nhắn từ ${post.author}</span>`;
+                } else if (post.type === 'anonymous') {
+                    cardClass = "anonymous-card";
+                    badgeHTML = `<span class="badge badge-anon">🕵️ Ẩn danh</span>`;
+                    displayAuthor = "Thành viên ẩn danh";
+                } else if (post.type === 'memory') {
+                    cardClass = "memory-card";
+                    badgeHTML = `<span class="badge badge-memory">📸 Kỷ Niệm</span>`;
+                } else {
+                    badgeHTML = `<span class="badge badge-public">🌐 Công khai</span>`;
+                }
+
+                const cardHTML = `
+                    <div class="card ${cardClass}">
+                        <div class="card-header">
+                            <span class="author">${displayAuthor}</span>
+                            <div>
+                                ${badgeHTML}
+                                <span class="post-time" style="margin-left: 8px;">🕒 ${post.time}</span>
+                            </div>
+                        </div>
+                        <div class="content">${post.content}</div>
+                        ${post.imageUrl ? `<img src="${post.imageUrl}" class="memory-img">` : ''}
+                        <div class="card-footer">
+                            <button class="like-btn" onclick="likePost('${post.id}')">❤️ ${post.likes}</button>
+                            ${(isMyPost || post.targetUser === currentUser) ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Xóa</button>` : ''}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        async function addPost() {
+            const contentInput = document.getElementById('post-content');
+            const content = contentInput.value.trim();
+
+            if (!content && !base64Image) {
+                alert("Bạn chưa viết nội dung!");
+                return;
+            }
+
+            const now = new Date();
+            const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} - ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+
+            let postType = "public";
+            let targetUser = "";
+
+            if (currentTab === 'ky-niem') postType = "memory";
+            else if (currentTab === 'gop-y') postType = "anonymous";
+            else if (currentTab === 'nhatky') {
+                const privacySelect = document.getElementById('privacy-mode').value;
+                if (privacySelect.startsWith("target:")) {
+                    postType = "target";
+                    targetUser = privacySelect.replace("target:", "");
+                } else {
+                    postType = "private";
+                }
+            }
+
+            const newPost = {
+                id: Date.now().toString(),
+                author: currentUser,
+                targetUser: targetUser,
+                content: content,
+                imageUrl: base64Image,
+                time: timeString,
+                type: postType,
+                likes: 0
+            };
+
+            const updatedPosts = [newPost, ...posts];
+            contentInput.value = "";
+            removeSelectedImage();
+            await savePostsToServer(updatedPosts);
+        }
+
+        async function deletePost(id) {
+            if (confirm("Xóa bài viết này?")) {
+                const updatedPosts = posts.filter(p => p.id !== id);
+                await savePostsToServer(updatedPosts);
+            }
+        }
+
+        async function likePost(id) {
+            const updatedPosts = posts.map(p => p.id === id ? {...p, likes: p.likes + 1} : p);
+            await savePostsToServer(updatedPosts);
+        }
+
+        function logout() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+        }
+
+        switchTab('luubut');
+        fetchPostsFromServer();
+        
+        // Tự động kiểm tra bài viết mới mỗi 4 giây (không bị giật)
+        setInterval(fetchPostsFromServer, 4000);
     </script>
 </body>
 </html>
