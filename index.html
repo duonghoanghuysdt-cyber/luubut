@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #1e1e1e;
+            background: linear-gradient(135deg, #121316 0%, #1c1d22 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,36 +21,44 @@
             overflow: hidden;
         }
 
+        /* KHUNG ĐĂNG NHẬP LÀM MỚI (GLASSMORPHISM & GLOW EFFECT) */
         .login-card {
-            background: #252526;
+            background: rgba(33, 35, 40, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 45px 35px;
-            border-radius: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+                        0 0 25px rgba(255, 102, 178, 0.08);
             width: 90%;
-            max-width: 440px;
+            max-width: 420px;
             text-align: center;
-            border: 1px solid #333;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
+            transition: transform 0.3s ease;
         }
 
         .detective-icon {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 10px;
+            font-size: 52px;
+            display: inline-block;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
         }
 
         .login-card h2 {
-            color: #ff66b2;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff66b2 0%, #ff85c2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
             font-size: 26px;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .login-card p {
-            color: #a0a0a0;
-            font-size: 15px;
-            margin-bottom: 30px;
+            color: #9aa0a6;
+            font-size: 14px;
+            margin-bottom: 28px;
         }
 
         .form-group {
@@ -61,63 +69,87 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-size: 15px;
-            color: #d4d4d4;
+            font-size: 13px;
+            color: #c5c7ce;
             font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 16px;
+            opacity: 0.7;
         }
 
         .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            background: #181818;
-            border: 1.5px solid #383838;
-            border-radius: 10px;
-            font-size: 15px;
+            padding: 13px 16px 13px 42px;
+            background: rgba(18, 19, 22, 0.6);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 14px;
             color: #ffffff;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.25s ease;
         }
 
         .form-group input::placeholder {
-            color: #666666;
+            color: #5f6368;
         }
 
         .form-group input:focus {
             border-color: #ff66b2;
+            background: rgba(18, 19, 22, 0.9);
+            box-shadow: 0 0 12px rgba(255, 102, 178, 0.2);
         }
 
+        /* NÚT TIẾP TỤC ĐƯỢC NÂNG CẤP DẢI MÀU & HIỆU ỨNG */
         .btn-login {
             width: 100%;
-            padding: 15px;
-            background: #ff66b2;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff66b2 0%, #e05297 100%);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
+            transition: all 0.3s ease;
             margin-top: 10px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            box-shadow: 0 6px 20px rgba(255, 102, 178, 0.3);
         }
 
         .btn-login:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 102, 178, 0.45);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
         }
 
         .error-msg {
-            color: #ff4757;
-            font-size: 14px;
+            color: #ff5252;
+            font-size: 13px;
             margin-top: 15px;
             display: none;
+            font-weight: 500;
         }
 
-        /* POPUP HỎI ĐẸP TRAI */
+        /* POPUP CÂU HỎI */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -133,26 +165,27 @@
         }
 
         .modal-card {
-            background: #252526;
+            background: #212328;
             padding: 35px 30px;
             border-radius: 20px;
-            border: 1px solid #ff66b2;
+            border: 1px solid rgba(255, 102, 178, 0.4);
             text-align: center;
             width: 90%;
             max-width: 380px;
-            box-shadow: 0 10px 30px rgba(255, 102, 178, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+                        0 0 25px rgba(255, 102, 178, 0.2);
             position: relative;
         }
 
         .modal-card h3 {
             color: #ff66b2;
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 10px;
         }
 
         .modal-card p {
             color: #d4d4d4;
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 25px;
         }
 
@@ -166,24 +199,30 @@
 
         .btn-yes {
             padding: 12px 24px;
-            background: #ff66b2;
+            background: linear-gradient(135deg, #ff66b2 0%, #e05297 100%);
             color: white;
             border: none;
             border-radius: 10px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             flex: 1;
+            box-shadow: 0 4px 15px rgba(255, 102, 178, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-1px);
         }
 
         .btn-no {
             padding: 12px 24px;
-            background: #444;
-            color: #aaa;
-            border: none;
+            background: #2d3038;
+            color: #8a8f9d;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             position: relative;
             flex: 1;
@@ -201,12 +240,18 @@
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">Tên của bạn:</label>
-                <input type="text" id="username" placeholder="Ví dụ: Huy, Lan, Anh, Thư, Linh" autocomplete="off" required>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" placeholder="Ví dụ: Huy, Lan, Anh, Thư, Linh" autocomplete="off" required>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="password">Mật khẩu:</label>
-                <input type="password" id="password" placeholder="Nhập mật khẩu của bạn..." required>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔑</span>
+                    <input type="password" id="password" placeholder="Nhập mật khẩu của bạn..." required>
+                </div>
             </div>
 
             <button type="submit" class="btn-login">TIẾP TỤC</button>
@@ -258,8 +303,6 @@
 
             if (ACCOUNTS[inputUser] && ACCOUNTS[inputUser] === inputPass) {
                 pendingUser = NAME_MAP[inputUser];
-                
-                // Mở khung hỏi đẹp trai
                 document.getElementById("handsomeModal").classList.add("active");
             } else {
                 errorMsg.innerText = "Tên thành viên hoặc mật khẩu không đúng!";
@@ -267,7 +310,6 @@
             }
         });
 
-        // Nút "Không" tự né khi rê chuột tới
         function dodgeButton() {
             const btnNo = document.getElementById("btnNo");
             const x = Math.random() * 160 - 80;
@@ -275,7 +317,6 @@
             btnNo.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        // Chọn "Có" -> Hoàn tất đăng nhập
         function finishLogin() {
             localStorage.setItem("currentUser", pendingUser);
             window.location.href = "home.html";
